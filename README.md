@@ -13,7 +13,7 @@ This project is a boilerplate using the MERN stack to create a simple web app wi
 
 Clone the repository:
 ```sh
-git clone https://github.com/arjohnston/boilerplates.git
+git clone https://github.com/arjohnston/health-tracker.git
 ```
 
 ### Install and setup the project
