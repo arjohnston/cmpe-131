@@ -9,7 +9,7 @@ This project is a boilerplate using the MERN stack to create a simple web app wi
 
 ## Installation
 
-### Mern-auth Boilerplate
+### Health Tracker App
 
 Clone the repository:
 ```sh
