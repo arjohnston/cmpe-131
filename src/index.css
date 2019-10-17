@@ -20,29 +20,36 @@ input {
   align-items: center;
   min-height: 100vh;
   background-color: #222831;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='312' height='312' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%231a363d' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23223b45'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("/background.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  flex-direction: column;
 }
 
 form {
-  max-width: 375px;
+  max-width: 425px;
   width: 100%;
   display: flex;
   flex-direction: column;
   margin: 0 12px;
+  background-color: white;
+  padding: 60px 36px 36px;
+  border-radius: 10px;
 }
 
 .container h1 {
   font-weight: 200;
   color: #DDD;
   letter-spacing: 2px;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
   text-align: center;
 }
 
 .container a,
 .container a:visited {
   text-decoration: none;
-  color: #00adb5;
+  color: #FFF;
   transition: color 0.2s;
 }
 
@@ -50,7 +57,7 @@ form {
   color: white;
 }
 
-form p {
+.container p {
   color: #DDD;
   font-size: 0.8em;
   letter-spacing: 1px;
@@ -58,67 +65,102 @@ form p {
   font-weight: 300;
 }
 
+/* .container a, .container a:visited {
+  color: #FFF;
+} */
+
 form input {
-  background-color: rgba(100,100,100,0.3);
-  border-radius: 3px;
-  border: 1px solid #666;
-  padding: 18px 12px;
-  margin-bottom: 12px;
+  /* background-color: rgba(100,100,100,0.3); */
+  border-radius: 10px;
+  border: 1px solid #DDD;
+  padding: 18px 12px 18px 36px;
+  margin-bottom: 24px;
   outline: none;
-  color: white;
+  color: #555;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+form label {
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  font-weight: 300;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+form .form-input-wrapper {
+  position: relative;
+}
+form .form-input-wrapper svg {
+  height: 24px;
+  width: 24px;
+  fill: #DDD;
+  position: absolute;
+  top: 16px;
+  left: 10px;
+  transition: fill 0.2s;
 }
 
 form input:focus {
-  border: 1px solid #FFF;
+  border: 1px solid #3aab90;
+}
+form input:focus ~ svg {
+  fill: #3aab90;
 }
 
 form input::placeholder {
-  color: #CCCCCC;
+  color: #DDD;
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus
 input:-webkit-autofill {
-  border: none;
-  -webkit-text-fill-color: white;
+  border: 1px solid #DDD;
+  -webkit-text-fill-color: #555;
   transition: background-color 5000s ease-in-out 0s;
 }
 
 form button {
   padding: 18px 12px;
-  border-radius: 3px;
+  border-radius: 10px;
   border: none;
   transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-form button.active {
-  background: #007A82;
+  background: #3aab90;
+  color: #FFF;
   cursor: pointer;
-  color: white;
 }
-
 form button svg {
+  fill: #FFF;
   margin-right: 8px;
 }
 
-form button.active svg {
+/* form button.active {
+  cursor: pointer;
+  color: white;
+} */
+
+/* form button svg {
+  margin-right: 8px;
+} */
+
+/* form button.active svg {
   fill: #FFF;
-}
+} */
 
-form button.inactive {
-  background: #7F7F7F;
+/* form button.inactive {
   color: #BBB;
-}
+} */
 
-form button.inactive svg {
+/* form button.inactive svg {
   fill: #BBB;
-}
+} */
 
-form button.active:hover {
+form button:hover {
   background: #00adb5;
 }
 

@@ -152,42 +152,62 @@ export default class extends Component {
 
     return (
       <div className='container'>
+      <h1>Create your account</h1>
         <form onSubmit={this.handleSubmit}>
-          <h1>Create your account</h1>
-
           {message !== '' &&
             <span>
               {message}
             </span>}
 
-          <input
-            type='email'
-            name='username'
-            placeholder='Your Email'
-            value={username}
-            onChange={this.handleChange}
-            onBlur={this.handleCheckIfUserExists}
-            required
-          />
+          <label htmlFor='username'>Username</label>
+          <div className='form-input-wrapper'>
+            <input
+              type='email'
+              name='username'
+              id='username'
+              // placeholder='Your Email'
+              value={username}
+              onChange={this.handleChange}
+              onBlur={this.handleCheckIfUserExists}
+              required
+            />
+            <svg viewBox='0 0 24 24'>
+              <path d='M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z' />
+            </svg>
+          </div>
           {this.state.usernameAvailable !== null && <div style={{ margin: '0 0 12px 12px' }}>{this.state.usernameAvailable ? <span style={{ color: 'green' }}>✔ Username available</span> : <span>✘ Username not available</span>}</div>}
 
-          <input
-            type='password'
-            name='password'
-            placeholder='Password'
-            value={password}
-            onChange={this.handleChange}
-            required
-          />
+          <label htmlFor='username'>Password</label>
+          <div className='form-input-wrapper'>
+            <input
+              type='password'
+              name='password'
+              id='password'
+              // placeholder='Password'
+              value={password}
+              onChange={this.handleChange}
+              required
+            />
+            <svg viewBox='0 0 24 24'>
+              <path d='M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z' />
+            </svg>
+          </div>
 
-          <input
-            type='password'
-            name='confirmPassword'
-            placeholder='Confirm Password'
-            value={confirmPassword}
-            onChange={this.handleChange}
-            required
-          />
+          <label htmlFor='confirmPassword'>Confirm Password</label>
+          <div className='form-input-wrapper'>
+            <input
+              type='password'
+              name='confirmPassword'
+              id='confirmPassword'
+              // placeholder='Confirm Password'
+              value={confirmPassword}
+              onChange={this.handleChange}
+              required
+            />
+            <svg viewBox='0 0 24 24'>
+              <path d='M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z' />
+            </svg>
+          </div>
 
           {this.state.password.length > 0 && <div className='password-strength'>Password Strength: <span style={{ color: this.state.passwordMeterColor }}>{this.state.passwordStrength}</span></div>}
 
@@ -199,11 +219,10 @@ export default class extends Component {
           >
             Create Account
           </button>
-
-          <p>
-            Already have an account? <Link to='/login'>Login</Link>
-          </p>
         </form>
+        <p>
+          Already have an account? <Link to='/login'>Login</Link>
+        </p>
       </div>
     )
   }
