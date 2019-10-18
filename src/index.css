@@ -27,6 +27,20 @@ input {
   flex-direction: column;
 }
 
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 48px;
+}
+
+header svg {
+  height: 80px;
+  width: 80px;
+  fill: white;
+}
+
 form {
   max-width: 425px;
   width: 100%;
@@ -44,6 +58,7 @@ form {
   letter-spacing: 2px;
   margin-bottom: 1.5em;
   text-align: center;
+  font-size: 2em;
 }
 
 .container a,
@@ -79,6 +94,7 @@ form input {
   color: #555;
   width: 100%;
   transition: all 0.2s;
+  background: transparent;
 }
 
 form label {
