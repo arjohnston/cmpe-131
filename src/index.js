@@ -5,7 +5,11 @@ import registerServiceWorker from './registerServiceWorker'
 
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Dashboard from './pages/Dashboard'
+import Dashboard from './components/Dashboard/Dashboard'
+import Overview from './pages/Overview'
+import DailyEntry from './pages/DailyEntry'
+import WaterIntake from './pages/WaterIntake'
+import DoctorVisits from './pages/DoctorVisits'
 import Error from './pages/Error'
 
 import 'normalize.css'
@@ -15,7 +19,18 @@ ReactDOM.render(
   <Router>
     <div>
       <Switch>
-        <Route exact path='/' component={Dashboard} />
+        <Route
+          exact
+          path='/(|daily-entry|water-intake|doctor-visits)'
+          render={() => (
+            <Dashboard>
+              <Route exact path='/' component={() => <Overview />} />
+              <Route path='/daily-entry' component={() => <DailyEntry />} />
+              <Route path='/water-intake' component={() => <WaterIntake />} />
+              <Route path='/doctor-visits' component={() => <DoctorVisits />} />
+            </Dashboard>
+          )}
+        />
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
         <Route render={function () {

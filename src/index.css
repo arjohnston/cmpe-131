@@ -12,7 +12,7 @@ input {
   -webkit-appearance: none;
 }
 
-.container {
+.login-container {
   width: 100%;
   height: 100%;
   display: flex;
@@ -27,7 +27,7 @@ input {
   flex-direction: column;
 }
 
-header {
+.login-container .login-header {
   position: absolute;
   top: 0;
   left: 0;
@@ -35,13 +35,13 @@ header {
   padding: 24px 48px;
 }
 
-header svg {
+.login-container .login-header svg {
   height: 80px;
   width: 80px;
   fill: white;
 }
 
-form {
+.login-container form {
   max-width: 425px;
   width: 100%;
   display: flex;
@@ -52,7 +52,7 @@ form {
   border-radius: 10px;
 }
 
-.container h1 {
+.login-container h1 {
   font-weight: 200;
   color: #DDD;
   letter-spacing: 2px;
@@ -61,18 +61,23 @@ form {
   font-size: 2em;
 }
 
-.container a,
-.container a:visited {
+.login-container a,
+.login-container a:visited {
   text-decoration: none;
   color: #FFF;
-  transition: color 0.2s;
+  transition: opacity 0.2s;
 }
 
-.container a:hover {
-  color: white;
+.login-container form a,
+.container form a:visited {
+  color: #3aab90;
 }
 
-.container p {
+.login-container a:hover {
+  opacity: 0.8;
+}
+
+.login-container p {
   color: #DDD;
   font-size: 0.8em;
   letter-spacing: 1px;
@@ -80,16 +85,10 @@ form {
   font-weight: 300;
 }
 
-/* .container a, .container a:visited {
-  color: #FFF;
-} */
-
-form input {
-  /* background-color: rgba(100,100,100,0.3); */
+.login-container form input {
   border-radius: 10px;
   border: 1px solid #DDD;
   padding: 18px 12px 18px 36px;
-  margin-bottom: 24px;
   outline: none;
   color: #555;
   width: 100%;
@@ -97,7 +96,7 @@ form input {
   background: transparent;
 }
 
-form label {
+.login-container form label {
   font-size: 0.9em;
   letter-spacing: 1px;
   font-weight: 300;
@@ -105,10 +104,11 @@ form label {
   margin-bottom: 6px;
 }
 
-form .form-input-wrapper {
+.login-container form .form-input-wrapper {
   position: relative;
+  margin-bottom: 24px;
 }
-form .form-input-wrapper svg {
+.login-container form .form-input-wrapper svg {
   height: 24px;
   width: 24px;
   fill: #DDD;
@@ -118,27 +118,28 @@ form .form-input-wrapper svg {
   transition: fill 0.2s;
 }
 
-form input:focus {
+.login-container form input:focus {
   border: 1px solid #3aab90;
 }
-form input:focus ~ svg {
+.login-container form input:focus ~ svg {
   fill: #3aab90;
 }
 
-form input::placeholder {
+.login-container form input::placeholder {
   color: #DDD;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus
-input:-webkit-autofill {
+.login-container input:-webkit-autofill,
+.login-container input:-webkit-autofill:hover,
+.login-container input:-webkit-autofill:focus
+.login-container input:-webkit-autofill {
   border: 1px solid #DDD;
   -webkit-text-fill-color: #555;
   transition: background-color 5000s ease-in-out 0s;
 }
 
-form button {
+.login-container form button,
+.login-container .button-primary {
   padding: 18px 12px;
   border-radius: 10px;
   border: none;
@@ -150,55 +151,34 @@ form button {
   color: #FFF;
   cursor: pointer;
 }
-form button svg {
+.login-container form button svg {
   fill: #FFF;
   margin-right: 8px;
 }
 
-/* form button.active {
-  cursor: pointer;
-  color: white;
-} */
-
-/* form button svg {
-  margin-right: 8px;
-} */
-
-/* form button.active svg {
-  fill: #FFF;
-} */
-
-/* form button.inactive {
-  color: #BBB;
-} */
-
-/* form button.inactive svg {
-  fill: #BBB;
-} */
-
-form button:hover {
+.login-container form button:hover {
   background: #00adb5;
 }
 
-form span {
+.login-container form span {
   color: orange;
   font-size: 0.95em;
   margin-bottom: 12px;
 }
 
-.password-strength {
+.login-container .password-strength {
   color: white;
   margin-bottom: 12px;
   font-size: 0.95em;
 }
 
-.password-meter-wrapper {
+.login-container .password-meter-wrapper {
   width: 100%;
   height: 5px;
   background: rgba(255,255,255,0.3);
   margin-bottom: 12px
 }
 
-.password-meter {
+.login-container .password-meter {
   height: 100%;
 }

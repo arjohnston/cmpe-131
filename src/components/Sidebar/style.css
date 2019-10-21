@@ -1,0 +1,117 @@
+.sidebar {
+  width: 112px;
+  background-color: #333a4d;
+  transition: width 0.2s;
+  position: relative;
+}
+
+.sidebar.expanded {
+  width: 350px;
+}
+
+.sidebar .logo {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding-top: 18px;
+}
+.sidebar .logo svg {
+  fill: white;
+  width: 60px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 36px;
+  align-items: center;
+}
+.sidebar.expanded nav {
+  align-items: flex-start;
+}
+
+.sidebar nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  max-width: calc(100%);
+  max-height: 94px;
+  width: 100%;
+  transition: all 0.2s;
+}
+.sidebar nav a.active {
+  background-color: #57627f;
+}
+.sidebar nav a:hover {
+  background-color: #464f67;
+}
+.sidebar nav a span {
+  width: 0;
+  opacity: 0;
+  transition: width 0.2s;
+}
+.sidebar.expanded nav a span {
+  width: 100%;
+  margin-left: 12px;
+  opacity: 1;
+  transition: opacity 0.2s 0.2s;
+}
+
+.sidebar nav a .icon {
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  min-height: 70px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar nav a .icon svg {
+  fill: rgba(255,255,255,0.8);
+  width: 48px;
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+.expand-sidebar-button {
+  position: absolute;
+  right: -40px;
+  width: 50px;
+  height: 100px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  background: #333a4d;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.sidebar:hover .expand-sidebar-button {
+  opacity: 1;
+}
+.expand-sidebar-button svg {
+  fill: white;
+  width: 36px;
+  height: 36px;
+  transition: transform 0.2s;
+}
+.sidebar.expanded .expand-sidebar-button svg {
+  transform: rotate(180deg);
+}
+.expand-sidebar-button:hover svg {
+  transform: scale(1.2);
+}
+.sidebar.expanded .expand-sidebar-button:hover svg {
+  transform: rotate(180deg) scale(1.2);
+}
