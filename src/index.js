@@ -10,6 +10,8 @@ import Overview from './pages/Overview'
 import DailyEntry from './pages/DailyEntry'
 import WaterIntake from './pages/WaterIntake'
 import DoctorVisits from './pages/DoctorVisits'
+import ForgotPassword from './pages/ForgotPassword'
+import Profile from './pages/Profile'
 import Error from './pages/Error'
 
 import 'normalize.css'
@@ -21,18 +23,20 @@ ReactDOM.render(
       <Switch>
         <Route
           exact
-          path='/(|daily-entry|water-intake|doctor-visits)'
+          path='/(|daily-entry|water-intake|doctor-visits|profile)'
           render={() => (
             <Dashboard>
               <Route exact path='/' component={() => <Overview />} />
               <Route path='/daily-entry' component={() => <DailyEntry />} />
               <Route path='/water-intake' component={() => <WaterIntake />} />
               <Route path='/doctor-visits' component={() => <DoctorVisits />} />
+              <Route path='/profile' component={() => <Profile />} />
             </Dashboard>
           )}
         />
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
+        <Route path='/forgot-password' component={ForgotPassword} />
         <Route render={function () {
           return <Error />
         }}

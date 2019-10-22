@@ -69,7 +69,7 @@ input {
 }
 
 .login-container form a,
-.container form a:visited {
+.login-container form a:visited {
   color: #3aab90;
 }
 
