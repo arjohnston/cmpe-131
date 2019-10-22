@@ -25,7 +25,7 @@ export default class extends Component {
   handleCheckIfUserExists () {
     if (!this.state.username) return
 
-    if (!(/^.+@.+\..+$/.test(this.state.username))) {
+    if (!/^.+@.+\..+$/.test(this.state.username)) {
       this.setState({
         message: 'Invalid email address'
       })
@@ -82,7 +82,7 @@ export default class extends Component {
 
     let variationCount = 0
     for (var check in variations) {
-      variationCount += (variations[check] === true) ? 1 : 0
+      variationCount += variations[check] === true ? 1 : 0
     }
     score += (variationCount - 1) * 10
 
@@ -135,12 +135,13 @@ export default class extends Component {
       return
     }
 
-    axios.post('/api/auth/register', { username, password })
+    axios
+      .post('/api/auth/register', { username, password })
       .then(() => {
         this.setState({ message: '' })
         this.props.history.push('/login')
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({
           message: error.response.data.message
         })
@@ -159,10 +160,7 @@ export default class extends Component {
         </div>
         <h1>Create your account</h1>
         <form onSubmit={this.handleSubmit}>
-          {message !== '' &&
-            <span>
-              {message}
-            </span>}
+          {message !== '' && <span>{message}</span>}
 
           <label htmlFor='username'>Username</label>
           <div className='form-input-wrapper'>
@@ -179,7 +177,15 @@ export default class extends Component {
               <path d='M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z' />
             </svg>
           </div>
-          {this.state.usernameAvailable !== null && <div style={{ margin: '0 0 12px 12px' }}>{this.state.usernameAvailable ? <span style={{ color: 'green' }}>✔ Username available</span> : <span>✘ Username not available</span>}</div>}
+          {this.state.usernameAvailable !== null && (
+            <div style={{ margin: '0 0 12px 12px' }}>
+              {this.state.usernameAvailable ? (
+                <span style={{ color: 'green' }}>✔ Username available</span>
+              ) : (
+                <span>✘ Username not available</span>
+              )}
+            </div>
+          )}
 
           <label htmlFor='username'>Password</label>
           <div className='form-input-wrapper'>
@@ -211,13 +217,41 @@ export default class extends Component {
             </svg>
           </div>
 
-          {this.state.password.length > 0 && <div className='password-strength'>Password Strength: <span style={{ color: this.state.passwordMeterColor }}>{this.state.passwordStrength}</span></div>}
+          {this.state.password.length > 0 && (
+            <div className='password-strength'>
+              Password Strength:{' '}
+              <span style={{ color: this.state.passwordMeterColor }}>
+                {this.state.passwordStrength}
+              </span>
+            </div>
+          )}
 
-          {this.state.password.length > 0 && <div className='password-meter-wrapper'><div className='password-meter' style={{ background: this.state.passwordMeterColor, width: this.state.passwordMeterProgress }} /></div>}
+          {this.state.password.length > 0 && (
+            <div className='password-meter-wrapper'>
+              <div
+                className='password-meter'
+                style={{
+                  background: this.state.passwordMeterColor,
+                  width: this.state.passwordMeterProgress
+                }}
+              />
+            </div>
+          )}
 
           <button
-            disabled={!this.state.password.length > 0 && !this.state.confirmPassword.length > 0 && !this.state.username.length > 0}
-            className={this.state.password.length > 0 && this.state.confirmPassword.length > 0 && this.state.username.length > 0 ? 'active' : 'inactive'} type='submit'
+            disabled={
+              !this.state.password.length > 0 &&
+              !this.state.confirmPassword.length > 0 &&
+              !this.state.username.length > 0
+            }
+            className={
+              this.state.password.length > 0 &&
+              this.state.confirmPassword.length > 0 &&
+              this.state.username.length > 0
+                ? 'active'
+                : 'inactive'
+            }
+            type='submit'
           >
             Create Account
           </button>

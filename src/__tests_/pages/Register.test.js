@@ -6,9 +6,7 @@ import Register from '../../pages/Register'
 
 describe('With Snapshot Testing', () => {
   it('should match its empty snapshot', () => {
-    const component = renderer.create(
-      <Register />
-    )
+    const component = renderer.create(<Register />)
     const tree = component.toJSON()
 
     expect(tree).toMatchSnapshot()

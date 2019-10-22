@@ -14,7 +14,9 @@ export class Dashboard extends Component {
   }
 
   componentDidMount () {
-    const token = window.localStorage ? window.localStorage.getItem('jwtToken') : ''
+    const token = window.localStorage
+      ? window.localStorage.getItem('jwtToken')
+      : ''
 
     // Immediately direct to /login if no jwtToken token present
     if (!token) {
@@ -25,7 +27,8 @@ export class Dashboard extends Component {
     // Verify if token is valid
     // As user persmissions are created, the verify auth should be more extensive
     // and return views as the permissions defines
-    axios.post('/api/auth/verify', { token })
+    axios
+      .post('/api/auth/verify', { token })
       .then(res => {
         this.setState({ isAuthenticated: true })
       })
@@ -36,7 +39,7 @@ export class Dashboard extends Component {
 
   render () {
     return (
-      this.state.isAuthenticated &&
+      this.state.isAuthenticated && (
         <div style={{ display: 'flex', minHeight: '100vh' }}>
           <Sidebar />
           <div style={{ width: '100%' }}>
@@ -44,6 +47,7 @@ export class Dashboard extends Component {
             {this.props.children}
           </div>
         </div>
+      )
     )
   }
 }

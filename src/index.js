@@ -32,16 +32,20 @@ ReactDOM.render(
               <Route path='/water-intake' component={() => <WaterIntake />} />
               <Route path='/doctor-visits' component={() => <DoctorVisits />} />
               <Route path='/profile' component={() => <Profile />} />
-              <Route path='/notifications' component={() => <Notifications />} />
+              <Route
+                path='/notifications'
+                component={() => <Notifications />}
+              />
             </Dashboard>
           )}
         />
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
         <Route path='/forgot-password' component={ForgotPassword} />
-        <Route render={function () {
-          return <Error />
-        }}
+        <Route
+          render={function () {
+            return <Error />
+          }}
         />
       </Switch>
     </div>

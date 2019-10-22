@@ -8,9 +8,7 @@ jest.mock('react-router-dom', () => ({ Link: 'Link' }))
 
 describe('With Snapshot Testing', () => {
   it('should match its empty snapshot', () => {
-    const component = renderer.create(
-      <Login />
-    )
+    const component = renderer.create(<Login />)
     const tree = component.toJSON()
 
     expect(tree).toMatchSnapshot()

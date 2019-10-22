@@ -16,7 +16,9 @@ export default class extends Component {
   }
 
   componentDidMount () {
-    const token = window.localStorage ? window.localStorage.getItem('jwtToken') : ''
+    const token = window.localStorage
+      ? window.localStorage.getItem('jwtToken')
+      : ''
 
     // Logout if token is present
     if (token) {
@@ -36,13 +38,14 @@ export default class extends Component {
 
     const { username, password } = this.state
 
-    axios.post('/api/auth/login', { username, password })
-      .then((result) => {
+    axios
+      .post('/api/auth/login', { username, password })
+      .then(result => {
         window.localStorage.setItem('jwtToken', result.data.token)
         this.setState({ message: '' })
         this.props.history.push('/')
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({
           message: error.response.data.message
         })
@@ -62,10 +65,7 @@ export default class extends Component {
         <h1>Welcome</h1>
 
         <form onSubmit={this.handleSubmit}>
-          {message !== '' &&
-            <span>
-              {message}
-            </span>}
+          {message !== '' && <span>{message}</span>}
 
           <label htmlFor='username'>Email</label>
           <div className='form-input-wrapper'>
@@ -97,15 +97,25 @@ export default class extends Component {
             </svg>
           </div>
 
-          <Link to='/forgot-password' style={{ margin: '-18px 0 24px' }}>Forgot Password?</Link>
+          <Link to='/forgot-password' style={{ margin: '-18px 0 24px' }}>
+            Forgot Password?
+          </Link>
 
           <button
-            disabled={!this.state.password.length > 0 && !this.state.username.length > 0}
-            className={this.state.password.length > 0 && this.state.username.length > 0 ? 'active' : 'inactive'} type='submit'
+            disabled={
+              !this.state.password.length > 0 && !this.state.username.length > 0
+            }
+            className={
+              this.state.password.length > 0 && this.state.username.length > 0
+                ? 'active'
+                : 'inactive'
+            }
+            type='submit'
           >
             <svg style={{ width: '24px', height: '24px' }} viewBox='0 0 24 24'>
               <path d='M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z' />
-            </svg>Login
+            </svg>
+            Login
           </button>
         </form>
 

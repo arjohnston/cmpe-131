@@ -52,9 +52,9 @@ export default function register () {
       }
     })
 
-    window.addEventListener('fetch', (event) => {
+    window.addEventListener('fetch', event => {
       // eslint-disable-next-line
-      if (event.request.url.match('^.*(\/api\/).*$')) {
+      if (event.request.url.match('^.*(/api/).*$')) {
         return false
       }
     })

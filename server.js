@@ -11,7 +11,8 @@ const mongoose = require('mongoose')
 const auth = require('./api/routes/auth')
 
 // Set the port to 3000 for development and 8080 for production
-const DEV = process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test'
+const DEV =
+  process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test'
 const TEST = process.env.NODE_ENV === 'test'
 
 // Utilize port 3000 for Development
@@ -23,19 +24,23 @@ const DATABASE_NAME = TEST ? 'cmpe-131-test' : 'cmpe-131'
 
 // Configure and connect to Mongoose
 mongoose.Promise = require('bluebird')
-mongoose.connect(
-  `mongodb://localhost/${DATABASE_NAME}`,
-  {
+mongoose
+  .connect(`mongodb://localhost/${DATABASE_NAME}`, {
     promiseLibrary: require('bluebird'),
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
   })
   .then(() => {
-    console.log(formatTerminalOutput({ text: 'MongoDB Connection Successful', type: 'body' }))
+    console.log(
+      formatTerminalOutput({
+        text: 'MongoDB Connection Successful',
+        type: 'body'
+      })
+    )
     console.log()
   })
-  .catch((error) => console.error(error))
+  .catch(error => console.error(error))
 
 // Configure Express
 // Set the port
@@ -93,18 +98,24 @@ server.listen(PORT, error => {
     clearTerminal()
     console.log(
       formatTerminalOutput({ text: 'DONE', type: 'title' }) +
-      ' ' +
-      formatTerminalOutput({ text: 'Compiled Successfully', type: 'body' })
+        ' ' +
+        formatTerminalOutput({ text: 'Compiled Successfully', type: 'body' })
     )
     console.log()
     console.log('You can view the app in the browser:')
     console.log()
-    console.log(`Local:               http://localhost:${server.address().port}`)
-    console.log(`On Your Network:     http://${address.ip()}:${server.address().port}`)
+    console.log(
+      `Local:               http://localhost:${server.address().port}`
+    )
+    console.log(
+      `On Your Network:     http://${address.ip()}:${server.address().port}`
+    )
     console.log()
 
     if (!DEV) {
-      console.log('To utilize hot reloading for development, open a new terminal and run `npm run dev`')
+      console.log(
+        'To utilize hot reloading for development, open a new terminal and run `npm run dev`'
+      )
       console.log()
     }
   }
