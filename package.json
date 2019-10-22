@@ -33,7 +33,8 @@
     "pm2-start": "pm2 start mongod --name \"database\" -- --dbpath=/Volumes/data/db/ && npm run build && pm2 start npm --name \"app\" -- start && npm run dev",
     "pm2-stop": "pm2 stop app database && pm2 delete app database",
     "deploy": "git pull && npm install && pm2 stop database api app && pm2 delete database api app && pm2 start mongod --name \"database\" && npm run build && pm2 start npm --name \"app\" -- start && pm2 start npm \"app\" -- run dev",
-    "lint": "prettier 'routes/*.js' 'config/*.js' 'src/*.js' 'src/**/*.js' '*.js' --write --single-quote --no-semi && standard --fix"
+    "lint": "prettier 'routes/*.js' 'config/*.js' 'src/*.js' 'src/**/*.js' '*.js' --write --single-quote --no-semi && standard --fix",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.js": [
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
     "prettier": "^1.18.2",
     "react-test-renderer": "^16.10.2",
     "standard": "^14.3.1"
