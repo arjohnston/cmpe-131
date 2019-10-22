@@ -12,6 +12,7 @@ import WaterIntake from './pages/WaterIntake'
 import DoctorVisits from './pages/DoctorVisits'
 import ForgotPassword from './pages/ForgotPassword'
 import Profile from './pages/Profile'
+import Notifications from './pages/Notifications'
 import Error from './pages/Error'
 
 import 'normalize.css'
@@ -23,7 +24,7 @@ ReactDOM.render(
       <Switch>
         <Route
           exact
-          path='/(|daily-entry|water-intake|doctor-visits|profile)'
+          path='/(|daily-entry|water-intake|doctor-visits|profile|notifications)'
           render={() => (
             <Dashboard>
               <Route exact path='/' component={() => <Overview />} />
@@ -31,6 +32,7 @@ ReactDOM.render(
               <Route path='/water-intake' component={() => <WaterIntake />} />
               <Route path='/doctor-visits' component={() => <DoctorVisits />} />
               <Route path='/profile' component={() => <Profile />} />
+              <Route path='/notifications' component={() => <Notifications />} />
             </Dashboard>
           )}
         />

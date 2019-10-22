@@ -11,9 +11,24 @@ header {
   position: relative;
 
   /* more hover room to enforce menu not closing prematurely */
-  min-width: 300px;
+  min-width: 125px;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+}
+
+/* .notification-bell {
+  cursor: pointer;
+} */
+
+.notification-bell svg {
+  fill: #CCC;
+  width: 36px;
+  transition: all 0.2s;
+}
+
+.notification-bell:hover svg {
+  fill: #3aab90;
 }
 
 .profile-menu-icon {
@@ -26,6 +41,11 @@ header {
   align-items: center;
   padding: 7px;
   fill: #FFF;
+}
+
+.profile-menu-down-icon {
+  fill: #CCC;
+  width: 36px;
 }
 
 .profile-menu {
