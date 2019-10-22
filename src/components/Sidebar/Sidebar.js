@@ -3,8 +3,6 @@ import { NavLink } from 'react-router-dom'
 
 import './style.css'
 
-// Add right arrow and move handlesidebarclick to that to expand/contract sidebar
-
 export default class extends Component {
   constructor (props) {
     super(props)
