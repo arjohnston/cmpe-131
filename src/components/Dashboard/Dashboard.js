@@ -30,7 +30,10 @@ export class Dashboard extends Component {
     axios
       .post('/api/auth/verify', { token })
       .then(res => {
-        this.setState({ isAuthenticated: true })
+        this.setState({
+          isAuthenticated: true,
+          username: res.data.username
+        })
       })
       .catch(() => {
         if (this.props.history) this.props.history.push('/login')
@@ -43,7 +46,7 @@ export class Dashboard extends Component {
         <div style={{ display: 'flex', minHeight: '100vh' }}>
           <Sidebar />
           <div style={{ width: '100%' }}>
-            <Header />
+            <Header username={this.state.username} />
             {this.props.children}
           </div>
         </div>

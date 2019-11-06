@@ -1,5 +1,15 @@
 import React, { Component } from 'react'
 
+// Form entry to POST info to DB:
+// Water intake interval
+// Thank you or submittal screen after submitted
+
+// May need to load current settings on componentDidMount
+// so user can edit the settings
+
+// * Need model, route
+// * Need cronjob or similar to send notifications at set interval
+
 export default class extends Component {
   render () {
     return (

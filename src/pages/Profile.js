@@ -6,6 +6,9 @@ import React, { Component } from 'react'
 // profile is set up:
 // name entered, gender entered, etc..
 
+// Change password - clicking on this button shows a form w/ confirm, new pass, confirm new pass
+// Delete account - clicking instills popup to re-enter username. Log them out once deleted
+
 export default class extends Component {
   render () {
     return (

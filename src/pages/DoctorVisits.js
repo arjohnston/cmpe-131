@@ -1,5 +1,15 @@
 import React, { Component } from 'react'
 
+// Form entry to POST info to DB:
+// 1. Date (Date)
+// 2. Notes (String)
+// Thank you or submittal screen after submitted
+
+// Probably want to display historical view of entries
+// when loading, get entries
+
+// * Need model, route
+
 export default class extends Component {
   render () {
     return (

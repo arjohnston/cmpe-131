@@ -1,12 +1,12 @@
 .sidebar {
-  width: 112px;
+  width: 96px;
   background-color: #333a4d;
   transition: width 0.2s;
   position: relative;
 }
 
 .sidebar.expanded {
-  width: 350px;
+  width: 300px;
 }
 
 .sidebar .logo {
@@ -17,7 +17,7 @@
 }
 .sidebar .logo svg {
   fill: white;
-  width: 60px;
+  width: 50px;
 }
 
 .sidebar nav {
@@ -33,7 +33,7 @@
 .sidebar nav a {
   color: white;
   text-decoration: none;
-  font-size: 1.2em;
+  font-size: 1em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,10 +62,10 @@
 }
 
 .sidebar nav a .icon {
-  width: 70px;
-  height: 70px;
-  min-width: 70px;
-  min-height: 70px;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -74,7 +74,7 @@
 
 .sidebar nav a .icon svg {
   fill: rgba(255,255,255,0.8);
-  width: 48px;
+  width: 36px;
 }
 
 @media (max-width: 767px) {
@@ -85,11 +85,11 @@
 
 .expand-sidebar-button {
   position: absolute;
-  right: -40px;
-  width: 50px;
-  height: 100px;
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
+  right: -35px;
+  width: 40px;
+  height: 80px;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
   background: #333a4d;
   display: flex;
   align-items: center;
@@ -102,8 +102,8 @@
 }
 .expand-sidebar-button svg {
   fill: white;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   transition: transform 0.2s;
 }
 .sidebar.expanded .expand-sidebar-button svg {

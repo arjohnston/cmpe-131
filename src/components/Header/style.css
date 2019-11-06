@@ -11,19 +11,15 @@ header {
   position: relative;
 
   /* more hover room to enforce menu not closing prematurely */
-  min-width: 125px;
+  min-width: 100px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-/* .notification-bell {
-  cursor: pointer;
-} */
-
 .notification-bell svg {
   fill: #CCC;
-  width: 36px;
+  width: 30px;
   transition: all 0.2s;
 }
 
@@ -32,8 +28,8 @@ header {
 }
 
 .profile-menu-icon {
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   background: #3aab90;
   display: flex;
@@ -45,13 +41,13 @@ header {
 
 .profile-menu-down-icon {
   fill: #CCC;
-  width: 36px;
+  width: 30px;
 }
 
 .profile-menu {
   display: none;
   position: absolute;
-  top: 50px;
+  top: 40px;
   right: 0;
   flex-direction: column;
   background: #FFF;
@@ -67,7 +63,7 @@ header {
   cursor: pointer;
   border-bottom: 1px solid #EEE;
   font-size: 1.3em;
-  min-width: 300px;
+  min-width: 275px;
 }
 
 .profile-menu > *:last-child {
@@ -93,6 +89,27 @@ header {
 
 .profile-menu-wrapper:hover .profile-menu {
   display: flex;
+}
+
+.profile-user-account:hover {
+  background: #FFF;
+  color: #515151;
+  cursor: default;
+}
+.profile-user-account:hover svg {
+  fill: white;
+}
+.profile-user-account svg {
+  width: 50px;
+  height: 50px;
+  fill: white;
+}
+.profile-user-account-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9em;
+  max-width: 200px;
+  overflow: hidden;
 }
 
 .mobile-logo {

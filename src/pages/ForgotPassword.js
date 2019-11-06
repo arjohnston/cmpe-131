@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
+// Simple to start- just give them a new pwd
+// if time allows, hook up w/ email: Mailchimp?
+
 export default class extends Component {
   constructor () {
     super()
