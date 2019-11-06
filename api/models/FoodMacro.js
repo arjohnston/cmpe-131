@@ -4,13 +4,16 @@ const Schema = mongoose.Schema
 const FoodMacroSchema = new Schema(
   {
     name: {
-      type: String
+      type: String,
+      required: true
     },
     ingredients: {
-      type: [String]
+      type: [String],
+      required: true
     },
     calories: {
-      type: Number
+      type: Number,
+      required: true
     }
   },
   { collection: 'FoodMacro' }

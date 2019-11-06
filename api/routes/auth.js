@@ -49,7 +49,9 @@ router.post('/checkIfUserExists', (req, res) => {
 // @return statusCode
 router.post('/register', function (req, res) {
   // If the username or password isn't supplied, return a BAD_REQUEST
-  if (!req.body.username || !req.body.password) { return res.status(BAD_REQUEST).send({ message: 'Bad Request.' }) }
+  if (!req.body.username || !req.body.password) {
+    return res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
+  }
 
   // Create a new user with the supplied username and password
   if (req.body.username && req.body.password) {
@@ -87,7 +89,9 @@ router.post('/register', function (req, res) {
 // @return: statusCode & JWT token
 router.post('/login', function (req, res) {
   // If the username or password isn't supplied, return a BAD_REQUEST
-  if (!req.body.username || !req.body.password) { return res.status(BAD_REQUEST).send({ message: 'Bad Request.' }) }
+  if (!req.body.username || !req.body.password) {
+    return res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
+  }
 
   // Try and find a user in the database
   User.findOne(
@@ -127,11 +131,9 @@ router.post('/login', function (req, res) {
             res.status(OK).send({ token: 'JWT ' + token })
           } else {
             // Unauthorized
-            res
-              .status(UNAUTHORIZED)
-              .send({
-                message: 'Username or password does not match our records.'
-              })
+            res.status(UNAUTHORIZED).send({
+              message: 'Username or password does not match our records.'
+            })
           }
         })
       }
@@ -145,9 +147,7 @@ router.post('/login', function (req, res) {
 // @return: statusCode
 router.post('/verify', function (req, res) {
   // If no token provided, then return a BAD_REQUEST
-  if (!req.body.token) {
-    return res.sendStatus(BAD_REQUEST)
-  }
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
 
   // Strip JWT from the token
   const token = req.body.token.replace(/^JWT\s/, '')
@@ -182,7 +182,9 @@ function testPasswordStrength (password) {
   /* eslint-enable */
 
   // test the password against the strong regex & return true if it passes
-  if (passwordStrength === 'strong') { return { success: strongRegex.test(password), message: strongMessage } }
+  if (passwordStrength === 'strong') {
+    return { success: strongRegex.test(password), message: strongMessage }
+  }
 
   // test medium password by default
   return { success: mediumRegex.test(password), message: mediumMessage }

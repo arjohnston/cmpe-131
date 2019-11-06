@@ -4,14 +4,16 @@ const Schema = mongoose.Schema
 const NotificationSchema = new Schema(
   {
     type: {
-      type: String
+      type: String,
+      required: true
     },
     date: {
       type: Date,
       default: Date.now
     },
     message: {
-      type: String
+      type: String,
+      required: true
     },
     isUnread: {
       type: Boolean,

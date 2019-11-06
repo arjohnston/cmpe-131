@@ -6,9 +6,13 @@ import React, { Component } from 'react'
 // Thank you or submittal screen after submitted
 
 // Probably want to display historical view of entries
-// when loading, get entries
+// => when loading, get entries
 
 // * Need model, route
+
+// Add new entry button on the top right as the CTA color
+// SHow historical view with Date : Notes
+//    maxWidth 800px, 2 columns
 
 export default class extends Component {
   render () {

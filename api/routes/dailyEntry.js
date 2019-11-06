@@ -9,6 +9,8 @@ const { OK, UNAUTHORIZED, BAD_REQUEST } = require('../../util/statusCodes')
 
 // Submit an entry
 router.post('/submit', (req, res) => {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
+
   const token = req.body.token.replace(/^JWT\s/, '')
 
   const data = {
@@ -32,7 +34,7 @@ router.post('/submit', (req, res) => {
           return res.sendStatus(BAD_REQUEST)
         }
 
-        return res.json(post)
+        return res.sendStatus(OK)
       })
     }
   })
@@ -40,6 +42,8 @@ router.post('/submit', (req, res) => {
 
 // Return an array of objects of entries
 router.post('/getEntries', (req, res) => {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
+
   const token = req.body.token.replace(/^JWT\s/, '')
 
   jwt.verify(token, config.secretKey, function (error, decoded) {

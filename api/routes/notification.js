@@ -14,12 +14,13 @@ const {
 
 // Submit an entry
 router.post('/create', (req, res) => {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
+
   const token = req.body.token.replace(/^JWT\s/, '')
 
   const data = {
-    name: req.body.name,
-    ingredients: req.body.ingredients,
-    calories: req.body.calories
+    type: req.body.type,
+    message: req.body.message
   }
 
   jwt.verify(token, config.secretKey, function (error, decoded) {
@@ -32,13 +33,15 @@ router.post('/create', (req, res) => {
           return res.sendStatus(BAD_REQUEST)
         }
 
-        return res.json(post)
+        return res.sendStatus(OK)
       })
     }
   })
 })
 
 router.post('/markAsRead', (req, res) => {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
+
   const token = req.body.token.replace(/^JWT\s/, '')
 
   const query = {
@@ -73,6 +76,8 @@ router.post('/markAsRead', (req, res) => {
 
 // Return an array of objects of entries
 router.post('/getNotifications', (req, res) => {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
+
   const token = req.body.token.replace(/^JWT\s/, '')
 
   jwt.verify(token, config.secretKey, function (error, decoded) {
@@ -80,12 +85,12 @@ router.post('/getNotifications', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      Notification.find({}, (error, entries) => {
+      Notification.find({}, (error, notifications) => {
         if (error) {
           return res.sendStatus(BAD_REQUEST)
         }
 
-        return res.status(OK).send(entries)
+        return res.status(OK).send(notifications)
       })
     }
   })
