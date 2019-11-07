@@ -29,7 +29,7 @@ router.post('/submit', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      DailyEntry.create(data, (error, post) => {
+      DailyEntry.create({ user: decoded.username, ...data }, (error, post) => {
         if (error) {
           return res.sendStatus(BAD_REQUEST)
         }
@@ -51,7 +51,7 @@ router.post('/getEntries', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      DailyEntry.find({}, (error, entries) => {
+      DailyEntry.find({ user: decoded.username }, (error, entries) => {
         if (error) {
           return res.sendStatus(BAD_REQUEST)
         }

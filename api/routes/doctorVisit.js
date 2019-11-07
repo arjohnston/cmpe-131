@@ -23,7 +23,7 @@ router.post('/submit', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      DoctorVisit.create(data, (error, post) => {
+      DoctorVisit.create({ user: decoded.username, ...data }, (error, post) => {
         if (error) {
           return res.sendStatus(BAD_REQUEST)
         }
@@ -45,7 +45,7 @@ router.post('/getEntries', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      DoctorVisit.find({}, (error, entries) => {
+      DoctorVisit.find({ user: decoded.username }, (error, entries) => {
         if (error) {
           return res.sendStatus(BAD_REQUEST)
         }

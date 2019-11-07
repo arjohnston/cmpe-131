@@ -14,6 +14,10 @@ const Schema = mongoose.Schema
 
 const DailyEntrySchema = new Schema(
   {
+    user: {
+      type: String,
+      required: true
+    },
     date: {
       type: Date,
       default: Date.now

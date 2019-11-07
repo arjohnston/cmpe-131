@@ -24,7 +24,7 @@ router.post('/create', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      FoodMacro.create(data, (error, post) => {
+      FoodMacro.create({ user: decoded.username, ...data }, (error, post) => {
         if (error) {
           return res.sendStatus(BAD_REQUEST)
         }
@@ -46,7 +46,7 @@ router.post('/getMacros', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      FoodMacro.find({}, (error, entries) => {
+      FoodMacro.find({ user: decoded.username }, (error, entries) => {
         if (error) {
           return res.sendStatus(BAD_REQUEST)
         }

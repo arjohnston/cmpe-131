@@ -28,13 +28,16 @@ router.post('/create', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      Notification.create(data, (error, post) => {
-        if (error) {
-          return res.sendStatus(BAD_REQUEST)
-        }
+      Notification.create(
+        { user: decoded.username, ...data },
+        (error, post) => {
+          if (error) {
+            return res.sendStatus(BAD_REQUEST)
+          }
 
-        return res.sendStatus(OK)
-      })
+          return res.sendStatus(OK)
+        }
+      )
     }
   })
 })
@@ -54,22 +57,25 @@ router.post('/markAsRead', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      Notification.updateOne(query, { isUnread: false }, function (
-        error,
-        result
-      ) {
-        if (error) {
-          return res.sendStatus(BAD_REQUEST)
-        }
+      Notification.updateOne(
+        { user: decoded.username, ...query },
+        { isUnread: false },
+        function (error, result) {
+          if (error) {
+            return res.sendStatus(BAD_REQUEST)
+          }
 
-        if (result.nModified < 1) {
+          if (result.nModified < 1) {
+            return res
+              .status(NOT_FOUND)
+              .send({ message: `${req.body.name} not found.` })
+          }
+
           return res
-            .status(NOT_FOUND)
-            .send({ message: `${req.body.name} not found.` })
+            .status(OK)
+            .send({ message: `${req.body.name} was updated.` })
         }
-
-        return res.status(OK).send({ message: `${req.body.name} was updated.` })
-      })
+      )
     }
   })
 })
@@ -85,7 +91,7 @@ router.post('/getNotifications', (req, res) => {
       // Unauthorized
       res.sendStatus(UNAUTHORIZED)
     } else {
-      Notification.find({}, (error, notifications) => {
+      Notification.find({ user: decoded.username }, (error, notifications) => {
         if (error) {
           return res.sendStatus(BAD_REQUEST)
         }

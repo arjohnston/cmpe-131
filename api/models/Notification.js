@@ -3,6 +3,10 @@ const Schema = mongoose.Schema
 
 const NotificationSchema = new Schema(
   {
+    user: {
+      type: String,
+      required: true
+    },
     type: {
       type: String,
       required: true

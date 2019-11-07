@@ -3,6 +3,10 @@ const Schema = mongoose.Schema
 
 const DoctorVisitSchema = new Schema(
   {
+    user: {
+      type: String,
+      required: true
+    },
     date: {
       type: Date,
       default: Date.now

@@ -3,6 +3,10 @@ const Schema = mongoose.Schema
 
 const FoodMacroSchema = new Schema(
   {
+    user: {
+      type: String,
+      required: true
+    },
     name: {
       type: String,
       required: true
