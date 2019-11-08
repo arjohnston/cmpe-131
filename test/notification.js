@@ -221,7 +221,6 @@ describe('Notification', () => {
         })
         .then(function (res) {
           expect(res).to.have.status(NOT_FOUND)
-          // res.body.should.be.a('array')
 
           done()
         })
@@ -237,7 +236,6 @@ describe('Notification', () => {
         .send({ token: token, ...notifications[0] })
         .then(function (res) {
           expect(res).to.have.status(OK)
-          // res.body.should.be.a('array')
 
           done()
         })

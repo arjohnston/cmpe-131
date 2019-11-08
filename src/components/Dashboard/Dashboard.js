@@ -5,6 +5,8 @@ import axios from 'axios'
 import Header from '../Header/Header'
 import Sidebar from '../Sidebar/Sidebar'
 
+// This doesn't re-render and thus re-verify when a token is expired
+
 export class Dashboard extends Component {
   constructor (props) {
     super(props)

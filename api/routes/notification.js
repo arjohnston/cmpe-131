@@ -23,6 +23,8 @@ router.post('/create', (req, res) => {
     message: req.body.message
   }
 
+  if (req.body.isRead) data.isUnread = false
+
   jwt.verify(token, config.secretKey, function (error, decoded) {
     if (error) {
       // Unauthorized
