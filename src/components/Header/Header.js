@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
-
 import './style.css'
+
+// should re-render when a notification is marked as read
 
 export class Header extends Component {
   constructor (props) {
@@ -33,10 +34,18 @@ export class Header extends Component {
             className='notification-bell'
             to='/notifications'
             activeClassName='active'
+            style={{ position: 'relative' }}
           >
             <svg viewBox='0 0 24 24'>
               <path d='M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21' />
             </svg>
+            {this.props.unreadNotificationCount > 0 && (
+              <div className='notification-count'>
+                {this.props.unreadNotificationCount > 9
+                  ? '9+'
+                  : this.props.unreadNotificationCount}
+              </div>
+            )}
           </NavLink>
           <div className='profile-menu-wrapper'>
             <svg className='profile-menu-icon' viewBox='0 0 24 24'>

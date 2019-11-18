@@ -29,6 +29,20 @@ header {
 .notification-bell:hover svg {
   fill: #3aab90;
 }
+.notification-bell .notification-count {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 0.7em;
+}
 
 .profile-menu-icon {
   height: 40px;

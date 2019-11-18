@@ -1,20 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-// Form entry to POST info to DB:
-// 1. Date (Date)
-// 2. Notes (String)
-// Thank you or submittal screen after submitted
-
-// Probably want to display historical view of entries
-// => when loading, get entries
-
-// * Need model, route
-
-// Add new entry button on the top right as the CTA color
-// SHow historical view with Date : Notes
-//    maxWidth 800px, 2 columns
-
 export default class extends Component {
   constructor (props) {
     super(props)
@@ -23,7 +9,7 @@ export default class extends Component {
       token: '',
       entries: [],
       addEntryFormShown: false,
-      formDate: new Date().toJSON().slice(0, 10),
+      formDate: new Date(),
       formNotes: '',
       message: ''
     }
@@ -80,11 +66,10 @@ export default class extends Component {
 
     const entries = this.state.entries.map((entry, index) => (
       <li key={index} className='entry'>
-        <div style={{ maxWidth: '100px', width: '100%' }}>{`${
-          months[new Date(entry.date).getMonth()]
-        } ${new Date(entry.date).getDate()}, ${new Date(
-          entry.date
-        ).getFullYear()}`}
+        <div style={{ maxWidth: '100px', width: '100%' }}>
+          {`${months[new Date(entry.date).getMonth()]} ${new Date(
+            entry.date
+          ).getDate()}, ${new Date(entry.date).getFullYear()}`}
         </div>
         {entry.notes}
       </li>
@@ -121,7 +106,7 @@ export default class extends Component {
       .then(res => {
         this.setState({
           addEntryFormShown: false, // close the form
-          formDate: new Date().toJSON().slice(0, 10),
+          formDate: new Date(), // reset the date
           formNotes: '',
           message: ''
         })
@@ -156,6 +141,12 @@ export default class extends Component {
   render () {
     const { formDate, formNotes, message } = this.state
 
+    let date = formDate
+
+    if (date.getMonth) {
+      date = date.toJSON().slice(0, 10)
+    }
+
     return (
       <div className='dashboard-page'>
         <div className='entry-form-wrapper'>
@@ -170,38 +161,39 @@ export default class extends Component {
             <form onSubmit={this.handleSubmitEntry}>
               {message !== '' && <span>{message}</span>}
 
-              <label htmlFor='formDate'>Date</label>
               <div className='form-input-wrapper'>
+                <label htmlFor='formDate'>Date</label>
                 <input
                   type='date'
                   name='formDate'
                   id='formDate'
-                  value={formDate}
+                  value={date}
                   onChange={this.handleChange}
                   required
+                  style={{ padding: '9px 12px' }}
                 />
               </div>
 
-              <label htmlFor='formNotes'>Notes</label>
-              <div className='form-input-wrapper'>
+              <div className='form-input-wrapper' style={{ width: '100%' }}>
+                <label htmlFor='formNotes'>Notes</label>
                 <textarea
                   name='formNotes'
                   id='formNotes'
                   value={formNotes}
+                  placeholder='Your notes here'
                   onChange={this.handleChange}
                   required
                 />
               </div>
 
-              <button type='submit'>
-                <svg
-                  style={{ width: '24px', height: '24px' }}
-                  viewBox='0 0 24 24'
-                >
-                  <path d='M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z' />
-                </svg>
-                Submit
-              </button>
+              <div className='button-wrapper'>
+                <button type='submit'>
+                  <svg viewBox='0 0 24 24'>
+                    <path d='M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z' />
+                  </svg>
+                  Submit
+                </button>
+              </div>
             </form>
           )}
         </div>

@@ -11,7 +11,10 @@ export class Dashboard extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
+      username: null,
+      token: null,
+      unreadNotificationCount: 0
     }
   }
 
@@ -34,7 +37,8 @@ export class Dashboard extends Component {
       .then(res => {
         this.setState({
           isAuthenticated: true,
-          username: res.data.username
+          username: res.data.username,
+          token: token
         })
       })
       .catch(() => {
@@ -48,7 +52,11 @@ export class Dashboard extends Component {
         <div style={{ display: 'flex', minHeight: '100vh' }}>
           <Sidebar />
           <div style={{ width: '100%' }}>
-            <Header username={this.state.username} />
+            <Header
+              username={this.state.username}
+              unreadNotificationCount={this.props.unreadNotificationCount}
+            />
+
             {this.props.children}
           </div>
         </div>

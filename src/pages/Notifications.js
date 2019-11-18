@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-// markNotificationAsRead should re-render header for the notification count
-// Improve no notifications to show message
-
 export default class extends Component {
   constructor (props) {
     super(props)
@@ -127,6 +124,7 @@ export default class extends Component {
       })
       .then(res => {
         this.getNotifications()
+        this.props.renderNotificationBadge()
       })
       .catch(error => {
         console.log(error)

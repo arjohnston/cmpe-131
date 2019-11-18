@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker'
+import axios from 'axios'
 
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -18,39 +19,91 @@ import Error from './pages/Error'
 import 'normalize.css'
 import './index.css'
 
-ReactDOM.render(
-  <Router>
-    <div>
-      <Switch>
-        <Route
-          exact
-          path='/(|daily-entry|water-intake|doctor-visits|profile|notifications)'
-          render={() => (
-            <Dashboard>
-              <Route exact path='/' component={() => <Overview />} />
-              <Route path='/daily-entry' component={() => <DailyEntry />} />
-              <Route path='/water-intake' component={() => <WaterIntake />} />
-              <Route path='/doctor-visits' component={() => <DoctorVisits />} />
-              <Route path='/profile' component={() => <Profile />} />
-              <Route
-                path='/notifications'
-                component={() => <Notifications />}
-              />
-            </Dashboard>
-          )}
-        />
-        <Route path='/login' component={Login} />
-        <Route path='/register' component={Register} />
-        <Route path='/forgot-password' component={ForgotPassword} />
-        <Route
-          render={function () {
-            return <Error />
-          }}
-        />
-      </Switch>
-    </div>
-  </Router>,
-  document.getElementById('root')
-)
+class App extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      token: '',
+      unreadNotificationCount: 0
+    }
+  }
+
+  componentDidMount () {
+    const token = window.localStorage
+      ? window.localStorage.getItem('jwtToken')
+      : ''
+
+    this.setState(
+      {
+        token: token
+      },
+      () => this.getNotifications()
+    )
+  }
+
+  getNotifications () {
+    axios
+      .post('/api/notification/getNotifications', { token: this.state.token })
+      .then(res => {
+        let unreadNotificationCount = 0
+
+        res.data.forEach(e => {
+          if (e.isUnread) unreadNotificationCount += 1
+        })
+
+        this.setState({
+          unreadNotificationCount: unreadNotificationCount
+        })
+      })
+  }
+
+  render () {
+    return (
+      <Router>
+        <div>
+          <Switch>
+            <Route
+              exact
+              path='/(|daily-entry|water-intake|doctor-visits|profile|notifications)'
+              render={() => (
+                <Dashboard
+                  unreadNotificationCount={this.state.unreadNotificationCount}
+                >
+                  <Route exact path='/' render={() => <Overview />} />
+                  <Route path='/daily-entry' render={() => <DailyEntry />} />
+                  <Route path='/water-intake' render={() => <WaterIntake />} />
+                  <Route
+                    path='/doctor-visits'
+                    render={() => <DoctorVisits />}
+                  />
+                  <Route path='/profile' render={() => <Profile />} />
+                  <Route
+                    path='/notifications'
+                    render={() => (
+                      <Notifications
+                        renderNotificationBadge={() => this.getNotifications()}
+                      />
+                    )}
+                  />
+                </Dashboard>
+              )}
+            />
+            <Route path='/login' render={Login} />
+            <Route path='/register' render={Register} />
+            <Route path='/forgot-password' render={ForgotPassword} />
+            <Route
+              render={function () {
+                return <Error />
+              }}
+            />
+          </Switch>
+        </div>
+      </Router>
+    )
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
 
 registerServiceWorker()
