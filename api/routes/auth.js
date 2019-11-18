@@ -118,7 +118,7 @@ router.post('/login', function (req, res) {
 
             // Set the expiration time
             const jwtOptions = {
-              expiresIn: '2h' // 2 hours
+              expiresIn: '4h' // 4 hours
             }
 
             // Data to be passed to the token stored in Local Storage

@@ -5,12 +5,10 @@ import axios from 'axios'
 // no html / XSS
 // correct: integer versus string, etc
 
-// entry to create new macro
-// handle adding food and calories
-// starting to type the food should pop with macro suggestions w/ previously entered food groups
-// should retrieve previous macros - so the app "learns"
-
 // for all historical view, add a loader while data is loading
+
+// when item is selected then remove active so filter menu doesnt persist
+// if no results, then don't show empty box
 
 export default class extends Component {
   constructor (props) {
@@ -19,6 +17,7 @@ export default class extends Component {
     this.state = {
       token: '',
       entries: [],
+      macros: {},
       addEntryFormShown: false,
       formDate: new Date(),
       formNotes: '',
@@ -28,7 +27,8 @@ export default class extends Component {
       formWeight: '',
       formFoodCalorie: [],
       formFoodName: [],
-      message: ''
+      message: '',
+      amountOfFoodEntries: 1
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -58,8 +58,16 @@ export default class extends Component {
           delete e.__v
         })
 
+        const macros = {}
+        res.data.forEach(entry => {
+          for (let i = 0; i < entry.foodName.length; i++) {
+            macros[entry.foodName[i]] = entry.foodCalorie[i]
+          }
+        })
+
         this.setState({
-          entries: res.data
+          entries: res.data.reverse(),
+          macros: macros
         })
       })
   }
@@ -86,8 +94,8 @@ export default class extends Component {
       (entry, index) => {
         let calories = 0
 
-        if (entry.calories) {
-          entry.calories.forEach(calorie => {
+        if (entry.foodCalorie) {
+          entry.foodCalorie.forEach(calorie => {
             calories += calorie
           })
         }
@@ -218,6 +226,14 @@ export default class extends Component {
   handleSubmitEntry (e) {
     e.preventDefault()
 
+    const formFoodName = []
+    const formFoodCalorie = []
+    Object.keys(this.state).forEach(key => {
+      if (key.includes('formFoodName') && key !== 'formFoodName') { formFoodName.push(this.state[key]) }
+
+      if (key.includes('formFoodCalorie') && key !== 'formFoodCalorie') { formFoodCalorie.push(this.state[key]) }
+    })
+
     const data = {
       token: this.state.token,
       date: this.state.formDate,
@@ -226,24 +242,33 @@ export default class extends Component {
       heartRate: this.state.formHeartRate,
       dailyExercise: this.state.dailyExercise,
       weight: this.state.formWeight,
-      foodCalorie: this.state.formFoodCalorie,
-      foodName: this.state.formFoodName
+      foodCalorie: formFoodCalorie,
+      foodName: formFoodName
     }
+
     axios
       .post('/api/dailyEntry/submit', data)
       .then(res => {
-        this.setState({
-          addEntryFormShown: false,
-          formDate: new Date(),
-          formNotes: '',
-          formBloodPressure: null,
-          formHeartRate: null,
-          formDailyExercise: null,
-          formWeight: null,
-          formFoodCalorie: [],
-          formFoodName: [],
-          message: ''
-        })
+        const state = Object.assign({}, { ...this.state }, null)
+
+        for (let i = 0; i < this.state.amountOfFoodEntries; i++) {
+          state[`formFoodName${i}`] = ''
+          state[`formFoodCalorie${i}`] = ''
+        }
+
+        state.addEntryFormShown = false
+        state.formDate = new Date()
+        state.formNotes = ''
+        state.formBloodPressure = ''
+        state.formHeartRate = ''
+        state.formDailyExercise = ''
+        state.formWeight = ''
+        state.formFoodCalorie = []
+        state.formFoodName = []
+        state.message = ''
+        state.amountOfFoodEntries = 1
+
+        this.setState(state)
 
         this.getEntries() // reload the data
         this.createNotification()
@@ -272,6 +297,91 @@ export default class extends Component {
     this.setState(state)
   }
 
+  incrementFoodEntriesShown () {
+    this.setState((prevState, props) => ({
+      amountOfFoodEntries: prevState.amountOfFoodEntries + 1
+    }))
+  }
+
+  renderFoodEntries () {
+    const entries = []
+
+    for (let i = 0; i < this.state.amountOfFoodEntries; i++) {
+      const inputState = Object.assign({}, { ...this.state }, null)
+      entries.push(
+        <div style={{ width: '100%', display: 'flex' }}>
+          <div className='form-input-wrapper form-input-macros-wrapper'>
+            <label htmlFor={`formFoodName${i}`}>Food Name</label>
+            <input
+              type='input'
+              name={`formFoodName${i}`}
+              id={`formFoodName${i}`}
+              value={this.state[`formFoodName${i}`] || ''}
+              onChange={this.handleChange}
+              autoComplete='off'
+              required
+            />
+            <div
+              className={`form-input-macros${
+                this.state[`formFoodName${i}`] &&
+                this.state[`formFoodName${i}`].length > 3
+                  ? ' active'
+                  : ''
+              }`}
+            >
+              <ul>
+                {Object.keys(this.state.macros)
+                  .filter(name =>
+                    name
+                      .toLowerCase()
+                      .includes(
+                        this.state[`formFoodName${i}`]
+                          ? this.state[`formFoodName${i}`].toLowerCase()
+                          : ''
+                      )
+                  )
+                  .map((foodName, index) => {
+                    return (
+                      <li
+                        key={index}
+                        onClick={() => {
+                          inputState[`formFoodName${i}`] = foodName
+                          inputState[`formFoodCalorie${i}`] = this.state.macros[
+                            foodName
+                          ]
+                          this.setState({ ...inputState })
+                        }}
+                      >
+                        {foodName}
+                      </li>
+                    )
+                  })}
+              </ul>
+            </div>
+          </div>
+
+          <div className='form-input-wrapper'>
+            <label htmlFor={`formFoodCalorie${i}`}>Calories</label>
+            <input
+              type='input'
+              name={`formFoodCalorie${i}`}
+              id={`formFoodCalorie${i}`}
+              value={this.state[`formFoodCalorie${i}`] || 0}
+              onChange={this.handleChange}
+              required
+            />
+          </div>
+        </div>
+      )
+    }
+
+    return entries.map((entry, index) => (
+      <div key={index} style={{ width: '100%' }}>
+        {entry}
+      </div>
+    ))
+  }
+
   render () {
     const {
       formDate,
@@ -280,8 +390,6 @@ export default class extends Component {
       formHeartRate,
       formDailyExercise,
       formWeight,
-      formFoodCalorie,
-      formFoodName,
       message
     } = this.state
 
@@ -298,7 +406,7 @@ export default class extends Component {
             onClick={this.handleShowEntryForm.bind(this)}
             className='entry-form-cta'
           >
-            Add Entry
+            Create Entry
           </button>
 
           {this.state.addEntryFormShown && (
@@ -372,28 +480,25 @@ export default class extends Component {
                 />
               </div>
 
-              <div className='form-input-wrapper'>
-                <label htmlFor='formFoodName'>Food Name</label>
-                <input
-                  type='input'
-                  name='formFoodName'
-                  id='formFoodName'
-                  value={formFoodName}
-                  onChange={this.handleChange}
-                  required
-                />
-              </div>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+                }}
+              >
+                {this.renderFoodEntries()}
 
-              <div className='form-input-wrapper'>
-                <label htmlFor='formFoodCalorie'>Food Calorie</label>
-                <input
-                  type='input'
-                  name='formFoodCalorie'
-                  id='formFoodCalorie'
-                  value={formFoodCalorie}
-                  onChange={this.handleChange}
-                  required
-                />
+                <div
+                  className='add-new-food-entry-button'
+                  onClick={this.incrementFoodEntriesShown.bind(this)}
+                >
+                  <svg viewBox='0 0 24 24'>
+                    <path d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z' />
+                  </svg>
+                  Add Food Entry
+                </div>
               </div>
 
               <div className='form-input-wrapper' style={{ width: '100%' }}>

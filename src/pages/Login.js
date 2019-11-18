@@ -20,10 +20,11 @@ export default class extends Component {
       ? window.localStorage.getItem('jwtToken')
       : ''
 
-    // Logout if token is present
+    // If token is present, log them in
     if (token) {
-      window.localStorage.removeItem('jwtToken')
-      window.location.reload()
+      // window.localStorage.removeItem('jwtToken')
+      // window.location.reload()
+      if (this.props.history) this.props.history.push('/')
     }
   }
 

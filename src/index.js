@@ -34,12 +34,17 @@ class App extends React.Component {
       ? window.localStorage.getItem('jwtToken')
       : ''
 
-    this.setState(
-      {
-        token: token
-      },
-      () => this.getNotifications()
-    )
+    if (token) {
+      this.setState(
+        {
+          token: token
+        },
+        () => {
+          if (this.props.history) this.props.history.push('/')
+          this.getNotifications()
+        }
+      )
+    }
   }
 
   getNotifications () {
@@ -89,9 +94,9 @@ class App extends React.Component {
                 </Dashboard>
               )}
             />
-            <Route path='/login' render={Login} />
-            <Route path='/register' render={Register} />
-            <Route path='/forgot-password' render={ForgotPassword} />
+            <Route path='/login' component={Login} />
+            <Route path='/register' component={Register} />
+            <Route path='/forgot-password' component={ForgotPassword} />
             <Route
               render={function () {
                 return <Error />

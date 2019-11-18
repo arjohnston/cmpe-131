@@ -42,6 +42,7 @@ export class Dashboard extends Component {
         })
       })
       .catch(() => {
+        window.localStorage.removeItem('jwtToken')
         if (this.props.history) this.props.history.push('/login')
       })
   }
