@@ -7,6 +7,7 @@ const User = require('../models/User')
 const config = require('../../util/settings')
 const {
   OK,
+  NOT_FOUND,
   UNAUTHORIZED,
   BAD_REQUEST,
   CONFLICT
@@ -51,6 +52,45 @@ router.post('/forgot-password', (req, res) => {
 
   // This can be built out to support emails
   return res.sendStatus(OK)
+})
+
+router.post('/edit', (req, res) => {
+  // Strip JWT from the token
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
+
+  const token = req.body.token.replace(/^JWT\s/, '')
+  const query = { username: req.body.queryUsername }
+  const user = {
+    ...req.body
+  }
+
+  // Remove the auth token from the form getting edited
+  delete user.queryUsername
+  delete user.token
+
+  jwt.verify(token, config.secretKey, function (error, decoded) {
+    if (error) {
+      // Unauthorized
+      res.sendStatus(UNAUTHORIZED)
+    } else {
+      // Ok
+      // Build this out to search for a user
+      if (!query.username) query.username = decoded.username
+      User.updateOne(query, { ...user }, function (error, result) {
+        if (error) res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
+
+        if (result.nModified < 1) {
+          return res
+            .status(NOT_FOUND)
+            .send({ message: `${req.body.queryUsername} not found.` })
+        }
+
+        return res
+          .status(OK)
+          .send({ message: `${req.body.queryUsername} was updated.` })
+      })
+    }
+  })
 })
 
 // Registers a new user if the username is unique
@@ -133,7 +173,9 @@ router.post('/login', function (req, res) {
 
             // Data to be passed to the token stored in Local Storage
             const userToBeSigned = {
-              username: user.username
+              username: user.username,
+              waterIntakeFrequency: user.waterIntakeFrequency,
+              lastLogin: user.lastLogin
             }
 
             // Sign the token using the data provided above, the secretKey and JWT options
@@ -149,6 +191,52 @@ router.post('/login', function (req, res) {
       }
     }
   )
+})
+
+router.post('/getWaterIntakeFrequency', function (req, res) {
+  const token = req.body.token.replace(/^JWT\s/, '')
+  // If the username or password isn't supplied, return a BAD_REQUEST
+  // if (!req.body.username) {
+  //   return res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
+  // }
+
+  jwt.verify(token, config.secretKey, function (error, decoded) {
+    if (error) {
+      // Unauthorized
+      res.sendStatus(UNAUTHORIZED)
+    } else {
+      // Ok
+      // Build this out to search for a user
+      User.findOne(
+        {
+          username: decoded.username
+        },
+        function (error, user) {
+          if (error) {
+            // Bad Request
+            return res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
+          }
+
+          if (!user) {
+            // Unauthorized if the username does not match any records in the database
+            res
+              .status(UNAUTHORIZED)
+              .send({
+                message: 'Username or password does not match our records.'
+              })
+          } else {
+            // Check if password matches database
+            res
+              .status(OK)
+              .send({
+                waterIntakeFrequency: user.waterIntakeFrequency,
+                lastLogin: user.lastLogin
+              })
+          }
+        }
+      )
+    }
+  })
 })
 
 // Verifies the users session if they have an active jwtToken.

@@ -41,13 +41,20 @@ export class Dashboard extends Component {
           token: token
         })
       })
+      .then(() => {
+        this.props.renderNotificationBadge()
+      })
       .catch(() => {
+        // if err statusCode == 401, then remove token & push /login
+        // otherwise log the token
         window.localStorage.removeItem('jwtToken')
         if (this.props.history) this.props.history.push('/login')
       })
   }
 
   render () {
+    // this.props.renderNotificationBadge(this.state.token)
+
     return (
       this.state.isAuthenticated && (
         <div style={{ display: 'flex', minHeight: '100vh' }}>

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
+// getNotifications not working because adding notifications at log in
+
 export default class extends Component {
   constructor () {
     super()
@@ -22,8 +24,6 @@ export default class extends Component {
 
     // If token is present, log them in
     if (token) {
-      // window.localStorage.removeItem('jwtToken')
-      // window.location.reload()
       if (this.props.history) this.props.history.push('/')
     }
   }
@@ -43,13 +43,77 @@ export default class extends Component {
       .post('/api/auth/login', { username, password })
       .then(result => {
         window.localStorage.setItem('jwtToken', result.data.token)
-        this.setState({ message: '' })
-        this.props.history.push('/')
+
+        this.setState(
+          {
+            message: '',
+            username: username,
+            token: result.data.token
+          },
+          () => {
+            this.createNotificationsForWaterIntake()
+          }
+        )
       })
       .catch(error => {
         this.setState({
           message: error.response.data.message
         })
+      })
+  }
+
+  createNotificationsForWaterIntake () {
+    axios
+      .post('/api/auth/getWaterIntakeFrequency', { token: this.state.token })
+      .then(res => {
+        const waterIntakeFrequency = res.data.waterIntakeFrequency
+
+        const today = new Date()
+        const lastLogin = new Date(res.data.lastLogin)
+        const amountOfHoursSinceLastLogin = Math.floor(
+          Math.abs(today - lastLogin) / (60 * 60 * 1000)
+        )
+
+        // Disregard if notifications are not being set up
+        if (waterIntakeFrequency <= 0) return
+
+        const amountOfNotificationsToGenerate = Math.floor(
+          amountOfHoursSinceLastLogin / waterIntakeFrequency
+        )
+
+        for (let i = 1; i <= amountOfNotificationsToGenerate; i++) {
+          const date = new Date(res.data.lastLogin)
+          date.setHours(date.getHours() + waterIntakeFrequency * i)
+
+          const data = {
+            token: this.state.token,
+            type: 'waterIntake',
+            message: `Make sure you consume your water. Created at ${date}`,
+            isRead: false,
+            date: date
+          }
+
+          axios.post('/api/notification/create', data)
+        }
+      })
+      .then(() => {
+        this.updateLastLoginDate(this.state.username, this.state.token)
+      })
+  }
+
+  updateLastLoginDate (username, token) {
+    axios
+      .post('/api/auth/edit', {
+        queryUsername: username,
+        lastLogin: new Date(),
+        // This token must be passed in for authentication
+        token: token
+      })
+      .then(() => {
+        if (this.props.history) this.props.history.push('/')
+      })
+      .catch(err => {
+        console.log(err)
       })
   }
 

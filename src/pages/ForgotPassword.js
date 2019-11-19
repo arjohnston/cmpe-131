@@ -80,6 +80,10 @@ export default class extends Component {
             Send email with reset link
           </button>
         </form>
+
+        <p>
+          Already know your password? <Link to='/login'>Login</Link>
+        </p>
       </div>
     ) : (
       <div className='login-container'>

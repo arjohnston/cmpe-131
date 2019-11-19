@@ -27,6 +27,8 @@ class App extends React.Component {
       token: '',
       unreadNotificationCount: 0
     }
+
+    this.getNotifications = this.getNotifications.bind(this)
   }
 
   componentDidMount () {
@@ -40,27 +42,35 @@ class App extends React.Component {
           token: token
         },
         () => {
-          if (this.props.history) this.props.history.push('/')
+          // console.log('T1: ', this.state.token)
           this.getNotifications()
+          if (this.props.history) this.props.history.push('/')
         }
       )
     }
   }
 
   getNotifications () {
-    axios
-      .post('/api/notification/getNotifications', { token: this.state.token })
-      .then(res => {
-        let unreadNotificationCount = 0
+    const token = window.localStorage
+      ? window.localStorage.getItem('jwtToken')
+      : ''
 
-        res.data.forEach(e => {
-          if (e.isUnread) unreadNotificationCount += 1
-        })
+    if (token) {
+      axios
+        .post('/api/notification/getNotifications', { token: token })
+        .then(res => {
+          let unreadNotificationCount = 0
 
-        this.setState({
-          unreadNotificationCount: unreadNotificationCount
+          res.data.forEach(e => {
+            if (e.isUnread) unreadNotificationCount += 1
+          })
+
+          this.setState({
+            unreadNotificationCount: unreadNotificationCount
+          })
         })
-      })
+        .catch(err => console.log('err...: ', err))
+    }
   }
 
   render () {
@@ -74,6 +84,7 @@ class App extends React.Component {
               render={() => (
                 <Dashboard
                   unreadNotificationCount={this.state.unreadNotificationCount}
+                  renderNotificationBadge={() => this.getNotifications()}
                 >
                   <Route exact path='/' render={() => <Overview />} />
                   <Route path='/daily-entry' render={() => <DailyEntry />} />

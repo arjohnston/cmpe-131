@@ -193,6 +193,9 @@ input {
   max-height: calc(100vh - 80px);
   overflow-y: scroll;
 }
+.dashboard-page h2 {
+  font-weight: 300;
+}
 .entry-form-wrapper {
   display: flex;
   width: 100%;

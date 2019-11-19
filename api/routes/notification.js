@@ -20,7 +20,8 @@ router.post('/create', (req, res) => {
 
   const data = {
     type: req.body.type,
-    message: req.body.message
+    message: req.body.message,
+    date: req.body.date
   }
 
   if (req.body.isRead) data.isUnread = false
