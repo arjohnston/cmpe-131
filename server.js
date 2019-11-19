@@ -11,7 +11,6 @@ const mongoose = require('mongoose')
 const auth = require('./api/routes/auth')
 const dailyEntry = require('./api/routes/dailyEntry')
 const doctorVisit = require('./api/routes/doctorVisit')
-const foodMacro = require('./api/routes/foodMacro')
 const notification = require('./api/routes/notification')
 
 // Set the port to 3000 for development and 8080 for production
@@ -71,7 +70,6 @@ if (DEV) {
 app.use('/api/auth', auth)
 app.use('/api/dailyEntry', dailyEntry)
 app.use('/api/doctorVisit', doctorVisit)
-app.use('/api/foodMacro', foodMacro)
 app.use('/api/notification', notification)
 
 // Catch 404 and forward to error handler

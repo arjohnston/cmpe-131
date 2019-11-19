@@ -43,6 +43,16 @@ router.post('/checkIfUserExists', (req, res) => {
   )
 })
 
+router.post('/forgot-password', (req, res) => {
+  // If a username is passed in, return a BAD_REQUEST
+  if (!req.body.username) {
+    return res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
+  }
+
+  // This can be built out to support emails
+  return res.sendStatus(OK)
+})
+
 // Registers a new user if the username is unique
 // @parameter username: String
 // @parameter password: String

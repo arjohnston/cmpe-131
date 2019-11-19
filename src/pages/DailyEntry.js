@@ -5,10 +5,9 @@ import axios from 'axios'
 // no html / XSS
 // correct: integer versus string, etc
 
-// for all historical view, add a loader while data is loading
+// for all historical views, add a loader while data is loading
 
 // when item is selected then remove active so filter menu doesnt persist
-// if no results, then don't show empty box
 
 export default class extends Component {
   constructor (props) {
@@ -28,7 +27,8 @@ export default class extends Component {
       formFoodCalorie: [],
       formFoodName: [],
       message: '',
-      amountOfFoodEntries: 1
+      amountOfFoodEntries: 1,
+      macroMenuOpen: null
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -229,9 +229,13 @@ export default class extends Component {
     const formFoodName = []
     const formFoodCalorie = []
     Object.keys(this.state).forEach(key => {
-      if (key.includes('formFoodName') && key !== 'formFoodName') { formFoodName.push(this.state[key]) }
+      if (key.includes('formFoodName') && key !== 'formFoodName') {
+        formFoodName.push(this.state[key])
+      }
 
-      if (key.includes('formFoodCalorie') && key !== 'formFoodCalorie') { formFoodCalorie.push(this.state[key]) }
+      if (key.includes('formFoodCalorie') && key !== 'formFoodCalorie') {
+        formFoodCalorie.push(this.state[key])
+      }
     })
 
     const data = {
@@ -308,6 +312,31 @@ export default class extends Component {
 
     for (let i = 0; i < this.state.amountOfFoodEntries; i++) {
       const inputState = Object.assign({}, { ...this.state }, null)
+      const macros = Object.keys(this.state.macros)
+        .filter(name =>
+          name
+            .toLowerCase()
+            .includes(
+              this.state[`formFoodName${i}`]
+                ? this.state[`formFoodName${i}`].toLowerCase()
+                : ''
+            )
+        )
+        .map((foodName, index) => {
+          return (
+            <li
+              key={index}
+              onClick={() => {
+                inputState[`formFoodName${i}`] = foodName
+                inputState[`formFoodCalorie${i}`] = this.state.macros[foodName]
+                this.setState({ ...inputState })
+              }}
+            >
+              {foodName}
+            </li>
+          )
+        })
+
       entries.push(
         <div style={{ width: '100%', display: 'flex' }}>
           <div className='form-input-wrapper form-input-macros-wrapper'>
@@ -321,43 +350,18 @@ export default class extends Component {
               autoComplete='off'
               required
             />
-            <div
-              className={`form-input-macros${
-                this.state[`formFoodName${i}`] &&
-                this.state[`formFoodName${i}`].length > 3
-                  ? ' active'
-                  : ''
-              }`}
-            >
-              <ul>
-                {Object.keys(this.state.macros)
-                  .filter(name =>
-                    name
-                      .toLowerCase()
-                      .includes(
-                        this.state[`formFoodName${i}`]
-                          ? this.state[`formFoodName${i}`].toLowerCase()
-                          : ''
-                      )
-                  )
-                  .map((foodName, index) => {
-                    return (
-                      <li
-                        key={index}
-                        onClick={() => {
-                          inputState[`formFoodName${i}`] = foodName
-                          inputState[`formFoodCalorie${i}`] = this.state.macros[
-                            foodName
-                          ]
-                          this.setState({ ...inputState })
-                        }}
-                      >
-                        {foodName}
-                      </li>
-                    )
-                  })}
-              </ul>
-            </div>
+            {macros.length > 0 && (
+              <div
+                className={`form-input-macros${
+                  this.state[`formFoodName${i}`] &&
+                  this.state[`formFoodName${i}`].length > 3
+                    ? ' active'
+                    : ''
+                }`}
+              >
+                <ul>{macros}</ul>
+              </div>
+            )}
           </div>
 
           <div className='form-input-wrapper'>
