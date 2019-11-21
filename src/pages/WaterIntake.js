@@ -5,7 +5,8 @@ import axios from 'axios'
 // a crontab or similar would need to be setup in order to
 // create notifications & send emails server side
 
-// animation when saving
+// these alerts only generate when logging in.
+// future may want to support every X interval to create
 
 export default class extends Component {
   constructor (props) {

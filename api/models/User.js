@@ -21,6 +21,15 @@ const UserSchema = new Schema(
     lastLogin: {
       type: Date,
       default: new Date()
+    },
+    name: {
+      type: String
+    },
+    gender: {
+      type: String
+    },
+    weight: {
+      type: Number
     }
   },
   { collection: 'User' }

@@ -187,7 +187,7 @@ export default class extends Component {
             </div>
           )}
 
-          <label htmlFor='username'>Password</label>
+          <label htmlFor='password'>Password</label>
           <div className='form-input-wrapper'>
             <input
               type='password'

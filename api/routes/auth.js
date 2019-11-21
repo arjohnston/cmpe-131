@@ -67,6 +67,7 @@ router.post('/edit', (req, res) => {
   // Remove the auth token from the form getting edited
   delete user.queryUsername
   delete user.token
+  delete user.password // don't allow password updates
 
   jwt.verify(token, config.secretKey, function (error, decoded) {
     if (error) {
@@ -89,6 +90,54 @@ router.post('/edit', (req, res) => {
           .status(OK)
           .send({ message: `${req.body.queryUsername} was updated.` })
       })
+    }
+  })
+})
+
+router.post('/updatePassword', (req, res) => {
+  // Strip JWT from the token
+  if (!req.body.token || !req.body.password) return res.sendStatus(BAD_REQUEST)
+
+  const token = req.body.token.replace(/^JWT\s/, '')
+  const query = { username: req.body.queryUsername }
+  const password = req.body.password
+
+  jwt.verify(token, config.secretKey, function (error, decoded) {
+    if (error) {
+      // Unauthorized
+      res.sendStatus(UNAUTHORIZED)
+    } else {
+      // Ok
+      // Build this out to search for a user
+      if (!query.username) query.username = decoded.username
+
+      User.findOne(
+        {
+          ...query
+        },
+        function (error, user) {
+          if (error) {
+            // Bad Request
+            return res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
+          }
+
+          if (!user) {
+            // Unauthorized if the username does not match any records in the database
+            res.status(404).send({ message: 'User not found.' })
+          } else {
+            user.password = password
+            user.save(function (error) {
+              if (error) {
+                // Confict
+                res.sendStatus(CONFLICT)
+              } else {
+                // Ok
+                res.sendStatus(OK)
+              }
+            })
+          }
+        }
+      )
     }
   })
 })
@@ -219,22 +268,81 @@ router.post('/getWaterIntakeFrequency', function (req, res) {
 
           if (!user) {
             // Unauthorized if the username does not match any records in the database
-            res
-              .status(UNAUTHORIZED)
-              .send({
-                message: 'Username or password does not match our records.'
-              })
+            res.status(UNAUTHORIZED).send({
+              message: 'Username or password does not match our records.'
+            })
           } else {
             // Check if password matches database
-            res
-              .status(OK)
-              .send({
-                waterIntakeFrequency: user.waterIntakeFrequency,
-                lastLogin: user.lastLogin
-              })
+            res.status(OK).send({
+              waterIntakeFrequency: user.waterIntakeFrequency,
+              lastLogin: user.lastLogin
+            })
           }
         }
       )
+    }
+  })
+})
+
+router.post('/getUser', function (req, res) {
+  const token = req.body.token.replace(/^JWT\s/, '')
+
+  jwt.verify(token, config.secretKey, function (error, decoded) {
+    if (error) {
+      // Unauthorized
+      res.sendStatus(UNAUTHORIZED)
+    } else {
+      // Ok
+      // Build this out to search for a user
+      User.findOne(
+        {
+          username: decoded.username
+        },
+        function (error, user) {
+          if (error) {
+            // Bad Request
+            return res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
+          }
+
+          if (!user) {
+            // Unauthorized if the username does not match any records in the database
+            res.status(UNAUTHORIZED).send({
+              message: 'Username or password does not match our records.'
+            })
+          } else {
+            // Check if password matches database
+            res.status(OK).send({
+              waterIntakeFrequency: user.waterIntakeFrequency,
+              lastLogin: user.lastLogin,
+              username: user.username,
+              name: user.name,
+              weight: user.weight,
+              gender: user.gender
+            })
+          }
+        }
+      )
+    }
+  })
+})
+
+router.post('/deleteUser', (req, res) => {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
+
+  const token = req.body.token.replace(/^JWT\s/, '')
+
+  jwt.verify(token, config.secretKey, function (error, decoded) {
+    if (error) {
+      // Unauthorized
+      res.sendStatus(UNAUTHORIZED)
+    } else {
+      User.deleteOne({ username: decoded.username }, (error, entries) => {
+        if (error) {
+          return res.sendStatus(BAD_REQUEST)
+        }
+
+        return res.status(OK).send(entries)
+      })
     }
   })
 })

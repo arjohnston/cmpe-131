@@ -105,4 +105,25 @@ router.post('/getNotifications', (req, res) => {
   })
 })
 
+router.post('/deleteAll', (req, res) => {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
+
+  const token = req.body.token.replace(/^JWT\s/, '')
+
+  jwt.verify(token, config.secretKey, function (error, decoded) {
+    if (error) {
+      // Unauthorized
+      res.sendStatus(UNAUTHORIZED)
+    } else {
+      Notification.deleteMany({ user: decoded.username }, (error, entries) => {
+        if (error) {
+          return res.sendStatus(BAD_REQUEST)
+        }
+
+        return res.status(OK).send(entries)
+      })
+    }
+  })
+})
+
 module.exports = router
