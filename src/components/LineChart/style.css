@@ -1,0 +1,35 @@
+.line-chart {
+  background: white;
+  border: 1px solid #DDD;
+  padding: 18px;
+  margin: 12px;
+}
+.line-chart svg {
+  fill: #000;
+  fill-opacity: 0.3;
+}
+
+.line-chart path {
+  stroke: steelblue;
+  stroke-width: 2px;
+  fill: none;
+}
+
+.line-chart .axis {
+  stroke: #000;
+}
+
+.line-chart .axis-labels text {
+  fill: #000;
+  fill-opacity: 0.9;
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.line-chart .axis-labels line {
+  stroke: #000;
+}
+
+.line-chart .gridline {
+  opacity: 0.2;
+}
