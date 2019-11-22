@@ -19,8 +19,7 @@ const UserSchema = new Schema(
       default: 0
     },
     lastLogin: {
-      type: Date,
-      default: new Date()
+      type: Date
     },
     name: {
       type: String

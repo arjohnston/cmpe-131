@@ -6,6 +6,7 @@ import Header from '../Header/Header'
 import Sidebar from '../Sidebar/Sidebar'
 
 // This doesn't re-render and thus re-verify when a token is expired
+// check error status code 401 for logging out
 
 export class Dashboard extends Component {
   constructor (props) {

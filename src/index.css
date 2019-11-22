@@ -591,3 +591,25 @@ input {
 .popup-close-button:hover svg {
   fill: #c32a2a;
 }
+.progress-list li {
+  list-style: none;
+  display: flex;
+  color: #515151;
+  margin: 6px 0;
+  align-items: center;
+}
+.progress-list li svg {
+  width: 30px;
+  margin-right: 6px;
+  fill: none;
+  padding: 3px;
+  border: 1px solid #515151;
+  border-radius: 50%;
+}
+.progress-list li.completed svg {
+  border: 1px solid #3aab90;
+  fill: #3aab90;
+}
+.progress-list li.completed {
+  color: #3aab90;
+}

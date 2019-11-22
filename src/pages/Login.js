@@ -48,7 +48,8 @@ export default class extends Component {
           {
             message: '',
             username: username,
-            token: result.data.token
+            token: result.data.token,
+            shouldSetupProfile: result.data.lastLogin === undefined
           },
           () => {
             this.createNotificationsForWaterIntake()
@@ -110,7 +111,13 @@ export default class extends Component {
         token: token
       })
       .then(() => {
-        if (this.props.history) this.props.history.push('/')
+        if (this.props.history) {
+          if (this.state.shouldSetupProfile) {
+            this.props.history.push('/profile')
+          } else {
+            this.props.history.push('/')
+          }
+        }
       })
       .catch(err => {
         console.log(err)

@@ -25,7 +25,12 @@ export default class extends Component {
       passwordStrength: 'Too short',
       passwordStrengthScore: 0,
       passwordMeterColor: 'red',
-      passwordMeterProgress: '25%'
+      passwordMeterProgress: '25%',
+      nameSetup: false,
+      genderSetup: false,
+      weightSetup: false,
+      entriesSetup: false,
+      showSetupProgress: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -50,18 +55,64 @@ export default class extends Component {
       {
         token: token
       },
-      () => this.getProfile()
+      () => this.getProfile(true)
     )
   }
 
-  getProfile () {
+  getProfile (componentJustMounted = false) {
+    let progress = 1 // 1 is account created
+
+    axios
+      .post('/api/dailyEntry/getEntries', { token: this.state.token })
+      .then(res => {
+        if (res.data.length > 0) progress += 1
+
+        this.setState({
+          entriesSetup: res.data.length > 0
+        })
+      })
+
     axios.post('/api/auth/getUser', { token: this.state.token }).then(res => {
+      let genderSetup = false
+      let nameSetup = false
+      let weightSetup = false
+
+      if (
+        res.data.name !== '' &&
+        res.data.name !== undefined &&
+        res.data.name !== null
+      ) {
+        nameSetup = true
+        progress += 1
+      }
+      if (
+        res.data.gender !== 'selectGender' &&
+        res.data.gender !== '' &&
+        res.data.gender !== undefined
+      ) {
+        genderSetup = true
+        progress += 1
+      }
+      if (
+        res.data.weight !== '' &&
+        res.data.weight !== undefined &&
+        res.data.weight !== null
+      ) {
+        weightSetup = true
+        progress += 1
+      }
+
       this.setState({
         username: res.data.username || '',
         queryUsername: res.data.username,
         name: res.data.name || '',
         weight: res.data.weight || '',
-        gender: res.data.gender || ''
+        gender: res.data.gender || '',
+        profileSetupProgress: progress,
+        genderSetup: genderSetup,
+        nameSetup: nameSetup,
+        weightSetup: weightSetup,
+        showSetupProgress: !componentJustMounted || progress !== 5
       })
     })
   }
@@ -180,6 +231,8 @@ export default class extends Component {
             message: 'Successfully updated.',
             queryUsername: this.state.username // update the username in case it was updated
           })
+
+          this.getProfile()
         })
         .catch(error => {
           console.log(error)
@@ -365,7 +418,7 @@ export default class extends Component {
         <span style={{ marginBottom: '24px' }}>{message}</span>
         <div
           style={{
-            display: 'flex',
+            display: this.state.showSetupProgress ? 'flex' : 'none',
             flexDirection: 'column',
             width: '100%',
             maxWidth: '500px'
@@ -383,12 +436,37 @@ export default class extends Component {
               {profileSetupProgress} / 5
             </span>
           </div>
-          <ul>
-            <li>Create account</li>
-            <li>Add your name</li>
-            <li>Select your gender</li>
-            <li>Enter your current weight</li>
-            <li>Create your first daily entry</li>
+          <ul className='progress-list'>
+            <li className='completed'>
+              <svg viewBox='0 0 24 24'>
+                <path d='M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z' />
+              </svg>
+              Create account
+            </li>
+            <li className={this.state.nameSetup ? 'completed' : ''}>
+              <svg viewBox='0 0 24 24'>
+                <path d='M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z' />
+              </svg>
+              Add your name
+            </li>
+            <li className={this.state.genderSetup ? 'completed' : ''}>
+              <svg viewBox='0 0 24 24'>
+                <path d='M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z' />
+              </svg>
+              Select your gender
+            </li>
+            <li className={this.state.weightSetup ? 'completed' : ''}>
+              <svg viewBox='0 0 24 24'>
+                <path d='M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z' />
+              </svg>
+              Enter your current weight
+            </li>
+            <li className={this.state.entriesSetup ? 'completed' : ''}>
+              <svg viewBox='0 0 24 24'>
+                <path d='M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z' />
+              </svg>
+              Create your first daily entry
+            </li>
           </ul>
         </div>
 
@@ -504,7 +582,7 @@ export default class extends Component {
           className={`popup-wrapper${
             this.state.popupOpen !== null ? ' is-open' : ''
           }`}
-          onClick={this.handleClick}
+          onMouseDown={this.handleClick}
         >
           <div
             className={`popup${

@@ -224,12 +224,15 @@ router.post('/login', function (req, res) {
             const userToBeSigned = {
               username: user.username,
               waterIntakeFrequency: user.waterIntakeFrequency,
-              lastLogin: user.lastLogin
+              lastLogin: user.lastLogin,
+              profileSetupComplete: user.profileSetupComplete
             }
 
             // Sign the token using the data provided above, the secretKey and JWT options
             const token = jwt.sign(userToBeSigned, config.secretKey, jwtOptions)
-            res.status(OK).send({ token: 'JWT ' + token })
+            res
+              .status(OK)
+              .send({ token: 'JWT ' + token, lastLogin: user.lastLogin })
           } else {
             // Unauthorized
             res.status(UNAUTHORIZED).send({
