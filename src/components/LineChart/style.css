@@ -2,7 +2,6 @@
   background: white;
   border: 1px solid #DDD;
   padding: 18px;
-  margin: 12px;
 }
 .line-chart svg {
   fill: #000;
@@ -10,7 +9,6 @@
 }
 
 .line-chart path {
-  stroke: steelblue;
   stroke-width: 2px;
   fill: none;
 }
