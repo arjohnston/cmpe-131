@@ -60,61 +60,62 @@ export default class extends Component {
   }
 
   getProfile (componentJustMounted = false) {
-    let progress = 1 // 1 is account created
-
     axios
       .post('/api/dailyEntry/getEntries', { token: this.state.token })
-      .then(res => {
-        if (res.data.length > 0) progress += 1
+      .then(result => {
+        const entriesSetup = result.data.length > 0
 
-        this.setState({
-          entriesSetup: res.data.length > 0
-        })
+        axios
+          .post('/api/auth/getUser', { token: this.state.token })
+          .then(res => {
+            let genderSetup = false
+            let nameSetup = false
+            let weightSetup = false
+            let progress = 1
+
+            // Entries
+            if (entriesSetup) progress += 1
+
+            if (
+              res.data.name !== '' &&
+              res.data.name !== undefined &&
+              res.data.name !== null
+            ) {
+              nameSetup = true
+              progress += 1
+            }
+            if (
+              res.data.gender !== 'selectGender' &&
+              res.data.gender !== '' &&
+              res.data.gender !== undefined
+            ) {
+              genderSetup = true
+              progress += 1
+            }
+            if (
+              res.data.weight !== '' &&
+              res.data.weight !== undefined &&
+              res.data.weight !== null
+            ) {
+              weightSetup = true
+              progress += 1
+            }
+
+            this.setState({
+              username: res.data.username || '',
+              queryUsername: res.data.username,
+              name: res.data.name || '',
+              weight: res.data.weight || '',
+              gender: res.data.gender || '',
+              profileSetupProgress: progress,
+              genderSetup: genderSetup,
+              nameSetup: nameSetup,
+              weightSetup: weightSetup,
+              entriesSetup: entriesSetup,
+              showSetupProgress: !componentJustMounted || progress !== 5
+            })
+          })
       })
-
-    axios.post('/api/auth/getUser', { token: this.state.token }).then(res => {
-      let genderSetup = false
-      let nameSetup = false
-      let weightSetup = false
-
-      if (
-        res.data.name !== '' &&
-        res.data.name !== undefined &&
-        res.data.name !== null
-      ) {
-        nameSetup = true
-        progress += 1
-      }
-      if (
-        res.data.gender !== 'selectGender' &&
-        res.data.gender !== '' &&
-        res.data.gender !== undefined
-      ) {
-        genderSetup = true
-        progress += 1
-      }
-      if (
-        res.data.weight !== '' &&
-        res.data.weight !== undefined &&
-        res.data.weight !== null
-      ) {
-        weightSetup = true
-        progress += 1
-      }
-
-      this.setState({
-        username: res.data.username || '',
-        queryUsername: res.data.username,
-        name: res.data.name || '',
-        weight: res.data.weight || '',
-        gender: res.data.gender || '',
-        profileSetupProgress: progress,
-        genderSetup: genderSetup,
-        nameSetup: nameSetup,
-        weightSetup: weightSetup,
-        showSetupProgress: !componentJustMounted || progress !== 5
-      })
-    })
   }
 
   scorePassword (password) {

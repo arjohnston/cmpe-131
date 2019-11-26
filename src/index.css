@@ -613,3 +613,19 @@ input {
 .progress-list li.completed {
   color: #3aab90;
 }
+
+.button.primary {
+  display: flex;
+  background-color: #53b8c0;
+  align-items: center;
+  padding: 18px 36px;
+  color: white;
+  transition: all 0.2s;
+  cursor: pointer;
+  margin: 12px 0;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.button.primary:hover {
+  transform: translateY(-2px);
+}

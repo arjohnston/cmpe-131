@@ -162,7 +162,7 @@ export default class extends Component {
         <form onSubmit={this.handleSubmit}>
           {message !== '' && <span>{message}</span>}
 
-          <label htmlFor='username'>Username</label>
+          <label htmlFor='username'>Email</label>
           <div className='form-input-wrapper'>
             <input
               type='email'
