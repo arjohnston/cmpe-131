@@ -13,21 +13,6 @@ import axios from 'axios'
 // get profile info & display
 // get daily entries info & build 3x chart data
 
-// Overview of their profile:
-// Weight
-// Gender
-// Name
-
-// chart 1
-// Calories
-
-// chart 3
-// Daily exercise
-
-// chart 4
-// Blood Pressure
-// heart rate
-
 // Filter by date function
 // Date range
 
@@ -43,64 +28,9 @@ export default class extends Component {
       name: '',
       weight: '',
       gender: '',
-      chartOne: [
-        {
-          date: '1/1/2017',
-          calories: 540
-        },
-        {
-          date: '2/5/2017',
-          calories: 1024
-        },
-        {
-          date: '3/10/2017',
-          calories: 512
-        },
-        {
-          date: '4/21/2017',
-          calories: 618
-        }
-      ],
-      chartTwo: [
-        {
-          date: '1/1/2017',
-          exercise: 30
-        },
-        {
-          date: '2/5/2017',
-          exercise: 25
-        },
-        {
-          date: '3/10/2017',
-          exercise: 0
-        },
-        {
-          date: '4/21/2017',
-          exercise: 45
-        }
-      ],
-      chartThree: [
-        {
-          date: '1/1/2017',
-          bloodPressure: 180,
-          heartRate: 105
-        },
-        {
-          date: '2/5/2017',
-          bloodPressure: 170,
-          heartRate: 95
-        },
-        {
-          date: '3/10/2017',
-          bloodPressure: 160,
-          heartRate: 100
-        },
-        {
-          date: '4/21/2017',
-          bloodPressure: 175,
-          heartRate: 110
-        }
-      ]
+      chartOne: null,
+      chartTwo: null,
+      chartThree: null
     }
   }
 
@@ -113,10 +43,58 @@ export default class extends Component {
       {
         token: token
       },
-      () => this.getProfile()
+      () => {
+        this.getProfile()
+        this.getEntries()
+      }
     )
+  }
 
-    // console.log(window)
+  getEntries () {
+    const chartOne = []
+    const chartTwo = []
+    const chartThree = []
+
+    axios
+      .post('/api/dailyEntry/getEntries', { token: this.state.token })
+      .then(res => {
+        res.data.forEach(entry => {
+          const chartOneObj = {}
+          const chartTwoObj = {}
+          const chartThreeObj = {}
+
+          let date = new Date(entry.date)
+          date = `${date.getMonth() +
+            1}/${date.getUTCDate()}/${date.getUTCFullYear()}`
+
+          chartOneObj.date = date
+          chartTwoObj.date = date
+          chartThreeObj.date = date
+
+          chartOneObj.calories = entry.foodCalorie.reduce((total, calorie) => {
+            return total + (parseInt(calorie, 10) || 0)
+          })
+
+          chartTwoObj.exercise = parseInt(entry.dailyExercise, 10) || 0
+
+          chartThreeObj.bloodPressure = parseInt(entry.bloodPressure, 10) || 0
+          chartThreeObj.heartRate = parseInt(entry.heartRate, 10) || 0
+
+          chartOne.push(chartOneObj)
+          chartTwo.push(chartTwoObj)
+          chartThree.push(chartThreeObj)
+        })
+
+        console.log(chartOne)
+        console.log(chartTwo)
+        console.log(chartThree)
+
+        this.setState({
+          chartOne: chartOne,
+          chartTwo: chartTwo,
+          chartThree: chartThree
+        })
+      })
   }
 
   getProfile () {
@@ -205,24 +183,30 @@ export default class extends Component {
             </div>
           </div>
         </div>
-        <LineChart
-          data={this.state.chartOne}
-          width={width}
-          height={height}
-          title='Calories'
-        />
-        <LineChart
-          data={this.state.chartTwo}
-          width={width}
-          height={height}
-          title='Exercise'
-        />
-        <LineChart
-          data={this.state.chartThree}
-          width={width}
-          height={height}
-          title='Blood Pressure & Heart Rate'
-        />
+        {this.state.chartOne && (
+          <LineChart
+            data={this.state.chartOne}
+            width={width}
+            height={height}
+            title='Calories'
+          />
+        )}
+        {this.state.chartTwo && (
+          <LineChart
+            data={this.state.chartTwo}
+            width={width}
+            height={height}
+            title='Exercise'
+          />
+        )}
+        {this.state.chartThree && (
+          <LineChart
+            data={this.state.chartThree}
+            width={width}
+            height={height}
+            title='Blood Pressure & Heart Rate'
+          />
+        )}
       </div>
     )
   }

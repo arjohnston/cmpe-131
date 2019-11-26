@@ -244,7 +244,7 @@ export default class extends Component {
       notes: this.state.formNotes,
       bloodPressure: this.state.formBloodPressure,
       heartRate: this.state.formHeartRate,
-      dailyExercise: this.state.dailyExercise,
+      dailyExercise: this.state.formDailyExercise,
       weight: this.state.formWeight,
       foodCalorie: formFoodCalorie,
       foodName: formFoodName

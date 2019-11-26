@@ -84,6 +84,8 @@ class LineChart extends Component {
     const lines = []
     const { data } = this.props
 
+    console.log(data)
+
     const line = d3
       .line()
       .x(data => this.state.xAxis(new Date(data.date)))
@@ -138,7 +140,6 @@ class LineChart extends Component {
           <text x='-5' y='5'>
             {yAxisFormat(dataPoint)}
           </text>
-          <line x1='15' x2='20' y1='0' y2='0' transform='translate(-5,0)' />
           <line
             className='gridline'
             x1='15'
@@ -154,13 +155,6 @@ class LineChart extends Component {
     return (
       <svg width={width} height={height}>
         <line className='axis' x1={margin + 15} x2={w} y1={h} y2={h} />
-        <line
-          className='axis'
-          x1={margin + 15}
-          x2={margin + 15}
-          y1={margin}
-          y2={h}
-        />
         {this.renderLines().map((line, index) => {
           return <path d={line} stroke={colors[index]} key={index} />
         })}
