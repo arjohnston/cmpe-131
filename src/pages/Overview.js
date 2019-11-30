@@ -188,7 +188,7 @@ export default class extends Component {
             data={this.state.chartOne}
             width={width}
             height={height}
-            title='Calories'
+            titleOne='Calories'
           />
         )}
         {this.state.chartTwo && (
@@ -196,7 +196,7 @@ export default class extends Component {
             data={this.state.chartTwo}
             width={width}
             height={height}
-            title='Exercise'
+            titleOne='Exercise'
           />
         )}
         {this.state.chartThree && (
@@ -204,7 +204,8 @@ export default class extends Component {
             data={this.state.chartThree}
             width={width}
             height={height}
-            title='Blood Pressure & Heart Rate'
+            titleOne='Blood Pressure'
+            titleTwo='Heart Rate'
           />
         )}
       </div>

@@ -246,11 +246,8 @@ router.post('/login', function (req, res) {
 })
 
 router.post('/getWaterIntakeFrequency', function (req, res) {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
   const token = req.body.token.replace(/^JWT\s/, '')
-  // If the username or password isn't supplied, return a BAD_REQUEST
-  // if (!req.body.username) {
-  //   return res.status(BAD_REQUEST).send({ message: 'Bad Request.' })
-  // }
 
   jwt.verify(token, config.secretKey, function (error, decoded) {
     if (error) {
@@ -288,6 +285,7 @@ router.post('/getWaterIntakeFrequency', function (req, res) {
 })
 
 router.post('/getUser', function (req, res) {
+  if (!req.body.token) return res.sendStatus(BAD_REQUEST)
   const token = req.body.token.replace(/^JWT\s/, '')
 
   jwt.verify(token, config.secretKey, function (error, decoded) {

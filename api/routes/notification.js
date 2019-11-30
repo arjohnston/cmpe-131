@@ -120,7 +120,7 @@ router.post('/deleteAll', (req, res) => {
           return res.sendStatus(BAD_REQUEST)
         }
 
-        return res.status(OK).send(entries)
+        return res.sendStatus(OK)
       })
     }
   })

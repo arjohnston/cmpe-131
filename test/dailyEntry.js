@@ -179,4 +179,36 @@ describe('Daily Entry', () => {
         })
     })
   })
+
+  describe('/POST /api/dailyEntry/deleteAll', () => {
+    it('Should return statusCode 401 when a token is not passed in', done => {
+      chai
+        .request(app)
+        .post('/api/dailyEntry/deleteAll')
+        .send({})
+        .then(function (res) {
+          expect(res).to.have.status(BAD_REQUEST)
+
+          done()
+        })
+        .catch(err => {
+          throw err
+        })
+    })
+
+    it('Should return OK when all entries have been deleted', done => {
+      chai
+        .request(app)
+        .post('/api/dailyEntry/deleteAll')
+        .send({ token: token })
+        .then(function (res) {
+          expect(res).to.have.status(OK)
+
+          done()
+        })
+        .catch(err => {
+          throw err
+        })
+    })
+  })
 })

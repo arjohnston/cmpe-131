@@ -23,15 +23,15 @@ class LineChart extends Component {
     this.setAxises()
   }
 
-  getTimeFormat () {
-    if (!this.props.timeFormat) return d3.timeFormat('%b')
+  setTimeFormat (timeFormat) {
+    if (!timeFormat) return d3.timeFormat('%b %d')
 
-    switch (this.props.timeFormat) {
+    switch (timeFormat) {
       case 'day':
         return d3.timeFormat('%d')
 
       case 'week':
-        return d3.timeFormat('%a %d')
+        return d3.timeFormat('%b %d')
 
       default:
         // month
@@ -84,8 +84,6 @@ class LineChart extends Component {
     const lines = []
     const { data } = this.props
 
-    console.log(data)
-
     const line = d3
       .line()
       .x(data => this.state.xAxis(new Date(data.date)))
@@ -117,7 +115,7 @@ class LineChart extends Component {
     const w = width - 2 * margin
 
     // number formatter
-    const xAxisFormat = this.getTimeFormat()
+    const xAxisFormat = this.setTimeFormat()
     const yAxisFormat = d3.format('.4')
 
     if (!xAxis || !yAxis) return
@@ -173,7 +171,28 @@ class LineChart extends Component {
           margin: '12px'
         }}
       >
-        <h2>{this.props.title}</h2>
+        <h2 style={{ display: 'flex', alignItems: 'center' }}>
+          {this.props.titleOne}
+          <div
+            style={{
+              width: '20px',
+              height: '3px',
+              backgroundColor: '#2887d6',
+              margin: '0 12px 0 6px'
+            }}
+          />
+          {this.props.titleTwo && this.props.titleTwo}
+          {this.props.titleTwo && (
+            <div
+              style={{
+                width: '20px',
+                height: '3px',
+                backgroundColor: '#13c16f',
+                marginLeft: '5px'
+              }}
+            />
+          )}
+        </h2>
         <div className='line-chart'>{this.renderChart()}</div>
       </div>
     )
