@@ -99,7 +99,7 @@ export default class extends Component {
   render () {
     return (
       <div className='dashboard-page' style={{ paddingTop: '72px' }}>
-        <h2>
+        <h2 style={{ textAlign: 'center' }}>
           How often would you like to receive reminders for your water intake?
         </h2>
         <p>{this.state.message}</p>

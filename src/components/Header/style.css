@@ -172,6 +172,7 @@ header {
   right: 0;
   left: 0;
   bottom: 0;
+  z-index: 1;
 }
 .mobile-menu.is-open {
   height: calc(100vh - 80px);

@@ -85,10 +85,6 @@ export default class extends Component {
           chartThree.push(chartThreeObj)
         })
 
-        console.log(chartOne)
-        console.log(chartTwo)
-        console.log(chartThree)
-
         this.setState({
           chartOne: chartOne,
           chartTwo: chartTwo,
@@ -132,55 +128,67 @@ export default class extends Component {
               background: 'white',
               padding: '18px',
               border: '1px solid #DDD',
-              display: 'flex'
+              display: 'flex',
+              flexDirection: 'column'
             }}
           >
             <div
               style={{
-                width: '50%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
+                display: 'flex'
               }}
+              className='overview-profile-wrapper'
             >
-              <svg
-                viewBox='0 0 24 24'
+              <div
                 style={{
-                  backgroundColor: 'DDD',
-                  fill: 'white',
-                  marginBottom: '24px',
-                  marginTop: '24px',
-                  width: '200px'
+                  width: '50%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
                 }}
               >
-                <path d='M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z' />
-              </svg>
+                <svg
+                  viewBox='0 0 24 24'
+                  style={{
+                    backgroundColor: 'DDD',
+                    fill: 'white',
+                    marginBottom: '24px',
+                    marginTop: '24px',
+                    width: '200px'
+                  }}
+                >
+                  <path d='M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z' />
+                </svg>
+              </div>
 
-              <Link to='/profile' className='button primary'>
-                Update profile
-              </Link>
+              <div style={{ width: '50%', marginTop: '36px' }}>
+                <div style={{ marginBottom: '12px' }}>
+                  <span style={{ color: '#515151' }}>Your name</span>
+                  <p style={{ margin: '0 12px', fontSize: '1.2em' }}>
+                    {this.state.name}
+                  </p>
+                </div>
+                <div style={{ marginBottom: '12px' }}>
+                  <span style={{ color: '#515151' }}>Weight</span>
+                  <p style={{ margin: '0 12px', fontSize: '1.2em' }}>
+                    {this.state.weight}
+                  </p>
+                </div>
+                <div style={{ marginBottom: '12px' }}>
+                  <span style={{ color: '#515151' }}>Gender</span>
+                  <p style={{ margin: '0 12px', fontSize: '1.2em' }}>
+                    {this.state.gender}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div style={{ width: '50%', marginTop: '36px' }}>
-              <div style={{ marginBottom: '12px' }}>
-                <span style={{ color: '#515151' }}>Your name</span>
-                <p style={{ margin: '0 12px', fontSize: '1.2em' }}>
-                  {this.state.name}
-                </p>
-              </div>
-              <div style={{ marginBottom: '12px' }}>
-                <span style={{ color: '#515151' }}>Weight</span>
-                <p style={{ margin: '0 12px', fontSize: '1.2em' }}>
-                  {this.state.weight}
-                </p>
-              </div>
-              <div style={{ marginBottom: '12px' }}>
-                <span style={{ color: '#515151' }}>Gender</span>
-                <p style={{ margin: '0 12px', fontSize: '1.2em' }}>
-                  {this.state.gender}
-                </p>
-              </div>
-            </div>
+            <Link
+              to='/profile'
+              className='button primary'
+              style={{ margin: 'auto' }}
+            >
+              Update profile
+            </Link>
           </div>
         </div>
         {this.state.chartOne && (

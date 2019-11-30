@@ -102,54 +102,30 @@ export default class extends Component {
 
         return (
           <li key={index} className='entry'>
-            <div style={{ maxWidth: '100px', width: '100%' }}>
+            <div style={{ maxWidth: '100px', width: '100%', border: 'none' }}>
+              <span>Date: </span>
               {`${months[new Date(entry.date).getMonth()]} ${new Date(
                 entry.date
               ).getDate()}, ${new Date(entry.date).getFullYear()}`}
             </div>
-            <div
-              style={{
-                maxWidth: '75px',
-                width: '100%',
-                textAlign: 'center',
-                borderLeft: '1px dashed #DDD'
-              }}
-            >
+            <div>
+              <span>Blood Pressure: </span>
               {entry.bloodPressure}
             </div>
-            <div
-              style={{
-                maxWidth: '75px',
-                width: '100%',
-                textAlign: 'center',
-                borderLeft: '1px dashed #DDD'
-              }}
-            >
+            <div>
+              <span>Heart Rate: </span>
               {entry.heartRate}
             </div>
-            <div
-              style={{
-                maxWidth: '75px',
-                width: '100%',
-                textAlign: 'center',
-                borderLeft: '1px dashed #DDD'
-              }}
-            >
+            <div>
+              <span>Weight: </span>
               {entry.weight}
             </div>
-            <div
-              style={{
-                maxWidth: '75px',
-                width: '100%',
-                textAlign: 'center',
-                borderLeft: '1px dashed #DDD'
-              }}
-            >
+            <div>
+              <span>Calories: </span>
               {calories}
             </div>
-            <div
-              style={{ padding: '0 0 0 6px', borderLeft: '1px dashed #DDD' }}
-            >
+            <div style={{ maxWidth: '100%' }}>
+              <span>Notes: </span>
               {entry.notes}
             </div>
           </li>
@@ -159,7 +135,7 @@ export default class extends Component {
 
     return (
       <ul className='data-row'>
-        <li>
+        <li className='data-header'>
           <div
             style={{
               maxWidth: '100px',

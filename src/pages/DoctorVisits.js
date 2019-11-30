@@ -66,18 +66,22 @@ export default class extends Component {
 
     const entries = this.state.entries.map((entry, index) => (
       <li key={index} className='entry'>
-        <div style={{ maxWidth: '100px', width: '100%' }}>
+        <div style={{ maxWidth: '100px', width: '100%', border: 'none' }}>
+          <span>Date: </span>
           {`${months[new Date(entry.date).getMonth()]} ${new Date(
             entry.date
           ).getDate()}, ${new Date(entry.date).getFullYear()}`}
         </div>
-        {entry.notes}
+        <div style={{ maxWidth: '100%', textAlign: 'left' }}>
+          <span>Notes: </span>
+          {entry.notes}
+        </div>
       </li>
     ))
 
     return (
       <ul className='data-row'>
-        <li>
+        <li className='data-header'>
           <div style={{ maxWidth: '100px', width: '100%' }}>Date</div>
           <div>Notes</div>
         </li>

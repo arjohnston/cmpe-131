@@ -246,6 +246,42 @@ input {
 .data-row li.entry.isUnread {
   border: 1px solid #4dc79d;
 }
+.data-row li.entry > div {
+  max-width: 75px;
+  width: 100%;
+  text-align: center;
+  border-left: 1px dashed #DDD;
+}
+.data-row li.entry > div > span {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .data-row {
+    margin: 0; padding: 0;
+  }
+  .data-row li {
+    margin: 5px;
+  }
+  .entry-form-cta {
+    align-self: center;
+  }
+  .data-row li.entry {
+    display: flex;
+    flex-direction: column;
+  }
+  .data-row li.entry > div {
+    text-align: left;
+    border: 1px solid transparent;
+    max-width: 100% !important;
+  }
+  .data-row .data-header {
+    display: none;
+  }
+  .data-row li.entry > div > span {
+    display: initial;
+  }
+}
 .notification-icon {
   width: 50px;
   height: 50px;
@@ -311,6 +347,15 @@ input {
   flex-direction: column;
   margin: 8px 6px;
   position: relative;
+}
+
+@media(max-width: 767px) {
+  .entry-form-wrapper .form-input-wrapper {
+    width: 100%;
+  }
+  .entry-form-wrapper {
+    padding: 24px 12px;
+  }
 }
 .entry-form-wrapper .form-input-wrapper label {
   color: #444;
@@ -430,6 +475,12 @@ input {
   padding: 24px 48px;
   justify-content: space-around;
 }
+@media (max-width: 767px) {
+  .profile-wrapper {
+    padding: 24px 12px;
+    flex-direction: column;
+  }
+}
 .profile-form-wrapper {
   display: flex;
   flex-direction: column;
@@ -464,7 +515,7 @@ input {
   outline: none;
   border: 1px solid #aaa;
   border-radius: 0;
-  width: 100%;
+  width: calc(100% - 12px);
   background-clip: padding-box;
   font-size: 1em;
 }
@@ -479,6 +530,7 @@ input {
   height: 44px;
   outline: none;
   padding-left: 12px;
+  width: calc(100% - 12px);
 }
 .profile-form-wrapper .menu-down {
   width: 30px;
@@ -490,6 +542,16 @@ input {
 .profile-wrapper .avatar {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+@media (max-width: 767px) {
+  .profile-wrapper .avatar svg {
+    max-width: 200px;
+  }
+  .profile-wrapper .avatar {
+    max-width: 200px;
+    margin: 72px auto 0;
+  }
 }
 .profile-wrapper .button-wrapper,
 .popup .button-wrapper {
@@ -610,8 +672,9 @@ input {
   border: 1px solid #3aab90;
   fill: #3aab90;
 }
-.progress-list li.completed {
-  color: #3aab90;
+.progress-list li.completed,
+.progress-list li.completed a {
+  color: #3aab90 !important;
 }
 
 .button.primary {
@@ -628,4 +691,11 @@ input {
 }
 .button.primary:hover {
   transform: translateY(-2px);
+}
+@media (max-width: 500px) {
+  .overview-profile-wrapper {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+  }
 }
