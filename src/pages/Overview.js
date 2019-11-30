@@ -16,9 +16,6 @@ import axios from 'axios'
 // Filter by date function
 // Date range
 
-const width = 600
-const height = 400
-
 export default class extends Component {
   constructor (props) {
     super(props)
@@ -30,8 +27,12 @@ export default class extends Component {
       gender: '',
       chartOne: null,
       chartTwo: null,
-      chartThree: null
+      chartThree: null,
+      width: 600,
+      height: 400
     }
+
+    this.onWindowResized = this.onWindowResized.bind(this)
   }
 
   componentDidMount () {
@@ -46,8 +47,50 @@ export default class extends Component {
       () => {
         this.getProfile()
         this.getEntries()
+        this.onWindowResized()
       }
     )
+
+    if (!window) {
+      return
+    }
+    if (window.addEventListener) {
+      window.addEventListener('resize', this.onWindowResized)
+    } else {
+      window.attachEvent('onresize', this.onWindowResized)
+    }
+  }
+
+  componentWillUnmount () {
+    if (window.addEventListener) {
+      window.removeEventListener('resize', this.onWindowResized)
+    } else {
+      window.detachEvent('onresize', this.onWindowResized)
+    }
+  }
+
+  onWindowResized () {
+    let { width, height } = this.state
+
+    console.log(window.innerWidth)
+
+    if (!window) return
+
+    const DEFAULT_SIZE = 600
+    const PADDING = 24
+    const SCROLL_BAR_WIDTH = 60
+    if (window.innerWidth < DEFAULT_SIZE + PADDING + SCROLL_BAR_WIDTH) {
+      width = window.innerWidth - PADDING - SCROLL_BAR_WIDTH
+    } else {
+      width = DEFAULT_SIZE
+    }
+
+    height = (width / 6) * 4
+
+    this.setState({
+      width: width,
+      height: height
+    })
   }
 
   getEntries () {
@@ -104,6 +147,8 @@ export default class extends Component {
   }
 
   render () {
+    const { width, height } = this.state
+
     return (
       <div
         className='dashboard-page'
