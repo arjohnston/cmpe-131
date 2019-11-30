@@ -72,8 +72,6 @@ export default class extends Component {
   onWindowResized () {
     let { width, height } = this.state
 
-    console.log(window.innerWidth)
-
     if (!window) return
 
     const DEFAULT_SIZE = 600
