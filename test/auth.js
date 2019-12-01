@@ -1,4 +1,4 @@
-/* global describe it before */
+/* global describe it before after */
 // During the test the env variable is set to test
 process.env.NODE_ENV = 'test'
 
@@ -8,7 +8,7 @@ const User = require('../api/models/User')
 // Require the dev-dependencies
 const chai = require('chai')
 const chaiHttp = require('chai-http')
-const app = require('../server')
+const server = require('../server')
 const expect = chai.expect
 const {
   OK,
@@ -21,16 +21,34 @@ const {
 chai.should()
 chai.use(chaiHttp)
 
+let serverInstance = null
+let app = null
+
+function initializeServer () {
+  serverInstance = new server.Server()
+  serverInstance.openConnection()
+  app = serverInstance.getServerInstance()
+}
+
+function terminateServer (done) {
+  serverInstance.closeConnection(done)
+}
+
 // Parent block for the User tests
 describe('Users', () => {
   // Clear the database before the test beings
   before(done => {
+    initializeServer()
+
     User.deleteMany({}, err => {
       if (err) {
         // Ignore the error
       }
       done()
     })
+  })
+  after(done => {
+    terminateServer(done)
   })
 
   // Set a variable for the token that will be created during the login process
