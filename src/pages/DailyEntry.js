@@ -124,7 +124,7 @@ export default class extends Component {
               <span>Calories: </span>
               {calories}
             </div>
-            <div style={{ maxWidth: '100%' }}>
+            <div style={{ maxWidth: '100%', textAlign: 'left' }}>
               <span>Notes: </span>
               {entry.notes}
             </div>

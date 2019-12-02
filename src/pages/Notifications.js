@@ -142,9 +142,11 @@ export default class extends Component {
       <li key={index} className={entry.isUnread ? 'isUnread entry' : 'entry'}>
         {this.getNotificationIcon(entry.type)}
 
-        <div className='message'>{entry.message}</div>
+        <div className='message' style={{ borderLeft: 'none' }}>
+          {entry.message}
+        </div>
 
-        <div className='meta-data'>
+        <div className='meta-data' style={{ borderLeft: 'none' }}>
           {this.getTimeStamp(entry.date)}
           {entry.isUnread && (
             <div
