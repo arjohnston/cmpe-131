@@ -205,6 +205,7 @@ input {
   width: 100%;
   padding: 24px 48px;
   flex-direction: column;
+  flex-shrink: 0;
 }
 .entry-form-cta {
   padding: 18px 48px;
@@ -481,6 +482,7 @@ input {
   width: 100%;
   padding: 24px 48px;
   justify-content: space-around;
+  flex-shrink: 0;
 }
 @media (max-width: 767px) {
   .profile-wrapper {
